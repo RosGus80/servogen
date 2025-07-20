@@ -16,10 +16,8 @@
 }
 
 header {
-    width: 80vw;
     height: 15vh;
 
-    margin-left: 10vw;
     padding-block: 1%;
 
     border-bottom: 2px solid var(--color-primary);
@@ -32,9 +30,8 @@ header {
     align-items: center;
 }
 
-main {
+main, header, footer {
     width: 80vw;
-
     margin-left: 10vw;
 }
 
@@ -129,4 +126,23 @@ th {
 
 tr:nth-child(even) {
     background-color: var(--color-light);
+}
+
+footer {
+    border-top: 2px solid var(--color-primary);
+}
+
+.rule-div {
+    width: 100%;
+
+    border-bottom: 2px solid var(--color-primary);
+    
+    display: flex;
+    flex-direction: column;
+
+    padding-block: 2%;
+}
+
+.rule-div > :nth-child(1) {
+    margin-bottom: 1.5%;
 }

@@ -1,5 +1,5 @@
 from jinja2 import Environment, FileSystemLoader
-from service import json_load, bundle_css, find_units
+from service import json_load, bundle_css, find_units, find_rules
 
 
 roster: dict = json_load('roster.json')['roster']
@@ -9,7 +9,7 @@ environment = Environment(loader=FileSystemLoader('templates/'))
 template = environment.get_template('main.html')
 
 
-def find_detachment() -> dict:
+def find_detachment() -> dict | None:
     """
     finds a dict of detachment info. Could be always on 
     roster['forces'][0]['selections'][1], but i wouldnt bet on it. 
@@ -18,6 +18,7 @@ def find_detachment() -> dict:
     for entry in roster['forces'][0]['selections']:
         if entry['name'] == 'Detachment':
             return entry
+    return None
         
 
 # All the env vars for template
@@ -45,11 +46,16 @@ faction_name: str = roster['forces'][0]['catalogueName']
 faction_rule_name: str = roster['forces'][0]['rules'][0]['name']
 faction_rule_description: str = roster['forces'][0]['rules'][0]['description']
 
-detach_entry: dict = find_detachment()
-detachment_name: str = detach_entry['selections'][0]['name']
-detachment_description: str = detach_entry['selections'][0]['profiles'][0]['characteristics'][0]['$text']
+detach_entry: dict | None = find_detachment()
+if detach_entry is None:
+    detachment_name = 'No detachment'
+    detachment_description = ''
+else:
+    detachment_name: str = detach_entry['selections'][0]['name']
+    detachment_description: str = detach_entry['selections'][0]['profiles'][0]['characteristics'][0]['$text']
 
 units = find_units(roster)
+rules = find_rules(units)
 
 content = template.render(
     roster_name=roster_name,
@@ -65,7 +71,9 @@ content = template.render(
     detachment_name=detachment_name,
     detachment_description=detachment_description,
 
-    units=units
+    units=units,
+    
+    rules=rules,
 )
 
 

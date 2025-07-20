@@ -52,5 +52,15 @@
         </table>
 
     </main>
+
+    <footer>
+        {% for rule in rules.items() %}
+            <details id="{{ rule[0] }}" class="rule-div">
+                 <summary class="header-text">{{ rule[1][0] }}</summary>
+
+                 <h1 class="medium-text">{{ rule[1][1] }}</h1>
+            </details>
+        {% endfor %}
+    </footer>
 </body>
 </html>

@@ -12,6 +12,7 @@ def bundle_css(html_path: str, css_path: str) -> None:
     double-click open it"""
     pass
 
+
 def find_units(json_roster: dict) -> list:
     selections = json_roster['forces'][0]['selections']
     output = []
@@ -24,3 +25,26 @@ def find_units(json_roster: dict) -> list:
             continue
     
     return output
+
+
+def find_rules(units: list) -> dict[str, tuple[str, str]]:
+    output = {}
+
+    for unit in units:
+        # try:
+        rules = unit['rules']
+
+        for selection in unit['selections']:
+            try:
+                rules.extend(selection['rules'])
+            except KeyError:
+                continue
+
+        for rule in rules:
+            output[rule['id']] = (rule['name'], rule['description'])
+        # except KeyError:
+        #     continue
+    
+    return output
+
+
