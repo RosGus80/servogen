@@ -18,3 +18,9 @@ A work-in-progress **CLI tool** that transforms your **[NewRecruit.eu](https://n
 * Interactive HTML (collapse/expand, custom filtering, mark models as dead)  
 * Roster statistics and tactical summaries  
 * Customisable color themes
+
+## 📜 License
+
+This project is licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** License.  
+You are free to use, modify, and distribute it — just please credit the original author.  
+[Read the full license here.](https://creativecommons.org/licenses/by/4.0/)
