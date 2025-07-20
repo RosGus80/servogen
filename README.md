@@ -9,8 +9,7 @@ A work-in-progress **CLI tool** that transforms your **[NewRecruit.eu](https://n
 * Converts NewRecruit `.json` files into static HTML  
 * Highlights your force rules selected units rules, adds hyperlinking to comfortly navigate through your list  
 * No server required — just open the HTML file in your browser  
-* Powered by **[Jinja2](https://jinja.palletsprojects.com/)** for flexible templating  
-* Ideal for personal use or sharing with your playgroup
+* Powered by **[Jinja2](https://jinja.palletsprojects.com/)**
 
 ## Planned Features
 
