@@ -1,0 +1,132 @@
+* {
+    margin: 0;
+    cursor: default;
+    
+    font-family: sans-serif;
+}
+
+:root {
+    --color-primary: #649699;
+    --color-dark: #193341;
+    --color-light: #efefef;
+    --color-secondary: #2a856a;
+    --color-teritary: #e0e0e0;
+    --color-contrast: #c75040;
+    --color-text: black;
+}
+
+header {
+    width: 80vw;
+    height: 15vh;
+
+    margin-left: 10vw;
+    padding-block: 1%;
+
+    border-bottom: 2px solid var(--color-primary);
+
+    display: flex;
+    flex-direction: column;
+
+    text-align: center;
+    justify-content: space-around;
+    align-items: center;
+}
+
+main {
+    width: 80vw;
+
+    margin-left: 10vw;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+
+.textline-wrap {
+
+    display: flex;
+    flex-direction: row;
+
+    gap: 5px;
+}
+
+.header-text {
+    color: var(--color-text);
+    font-weight: 400;
+    font-size: xx-large;
+}
+
+.large-text {
+    color: var(--color-text);
+    font-weight: 400;
+    font-size: larger;
+}
+
+.medium-text {
+    color: var(--color-text);
+    font-weight: 400;
+    font-size: large;
+}
+
+.error-color {
+    color: var(--color-contrast);
+}
+
+.primary-color {
+    color: var(--color-primary);
+}
+
+.dark-color {
+    color: var(--color-dark);
+}
+
+.army-info-div {
+    width: 100%;
+    
+    padding-block: 2.5%;
+}
+
+.faction-name {
+    color: var(--color-text);
+    font-size: large;
+    font-weight: 400;
+
+    text-align: center;
+}
+
+.army-rule-div {
+    margin-top: 5%;
+    padding-left: 2.5%;
+
+    width: 95%;
+
+    border-left: 2px solid var(--color-primary);
+}
+
+.top-margin {
+    margin-top: 2.5%;
+}
+
+table {
+    border-collapse: collapse;
+
+    width: 100%;
+    margin-block: 2.5%;
+
+    font-size: medium;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+    border: 1px solid var(--color-teritary);
+    padding: 0.6rem 1rem;
+    text-align: left;
+}
+
+th {
+    background-color: var(--color-teritary);
+}
+
+tr:nth-child(even) {
+    background-color: var(--color-light);
+}
