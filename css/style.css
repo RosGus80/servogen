@@ -73,6 +73,10 @@ pre {
     color: var(--color-primary);
 }
 
+.secondary-color {
+    color: var(--color-secondary);
+}
+
 .dark-color {
     color: var(--color-dark);
 }

@@ -10,6 +10,7 @@ def bundle_css(html_path: str, css_path: str) -> None:
     """Function that takes a css file that was previously linked by href and 
     explicitly puts it into the html file into <style> tag so that we can 
     double-click open it"""
+    
     with open(html_path, "r", encoding="utf-8") as html_file:
         html = html_file.read()
 
@@ -29,6 +30,20 @@ def bundle_css(html_path: str, css_path: str) -> None:
         html_file.write(html)
 
 
+def sort_units_fields(units: list) -> list:
+    """Takes the unit list and sorts the respective fields in them to 
+    normalise the output.
+    For now, does:
+    the primary category will always be the primary one"""
+
+    # Primary category sort
+    for unit in units:
+        categories: list = unit['categories']
+        categories.sort(key=lambda x: x['primary'], reverse=True)
+
+    return units
+
+
 def find_units(json_roster: dict) -> list:
     selections = json_roster['forces'][0]['selections']
     output = []
@@ -39,6 +54,8 @@ def find_units(json_roster: dict) -> list:
                 output.append(selection)
         except KeyError:
             continue
+    
+    sort_units_fields(output)
     
     return output
 
