@@ -80,4 +80,4 @@ content = template.render(
 with open("outputs/out.html", "w") as file:
     file.write(content)
 
-bundle_css('outputs/out.html', 'css/style.css')
+# bundle_css('outputs/out.html', 'css/style.css')

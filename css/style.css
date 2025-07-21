@@ -77,8 +77,16 @@ pre {
     color: var(--color-secondary);
 }
 
+.teritary-color {
+    color: var(--color-teritary);
+}
+
 .dark-color {
     color: var(--color-dark);
+}
+
+.light-color {
+    color: var(--color-light);
 }
 
 .army-info-div {
@@ -149,4 +157,50 @@ footer {
 
 .rule-div > :nth-child(1) {
     margin-bottom: 1.5%;
+}
+
+.units-div {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
+.unit-wrapper {
+    margin-bottom: 2.5%;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.unit-title-div {
+    width: 100%;
+    height: 5vh;
+
+    background-color: var(--color-primary);
+}
+
+.unit-header-wrapper {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    align-items: center;
+
+    text-align: center;
+
+    height: 100%;
+    width: 95%;;
+
+    margin-left: 2.5%;
+}
+
+.unit-main {
+    display: flex;
+    flex-direction: row;
 }

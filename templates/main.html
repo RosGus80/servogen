@@ -7,6 +7,21 @@
 </head>
 
 <body>
+
+    <script>
+        const onIdClick = (id) => {
+            const targetDiv = document.getElementById(id);
+
+            if (targetDiv) {
+                targetDiv.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                });
+            }
+        }
+    </script>
+
+
     <header>
         <div class="textline-wrap">
             <h1 class="header-text">{{ roster_name }} - </h1>
@@ -43,13 +58,34 @@
             </tr>
 
             {% for unit in units %}
-            <tr>
-                <td>{{ unit["name"] }}</td>
-                <td>{{ unit["categories"][0]["name"] }}</td>
-                <td>{{ unit["costs"][0]["value"] }}</td>
-            </tr>
+                <tr onclick="onIdClick('{{ unit['id'] }}')">
+                    <td>{{ unit["name"] }}</td>
+                    <td>{{ unit["categories"][0]["name"] }}</td>
+                    <td>{{ unit["costs"][0]["value"] }}</td>
+                </tr>
             {% endfor %}
         </table>
+
+        <div class="units-div">
+
+            {% for unit in units %}
+                <div class="unit-wrapper" id="{{ unit['id'] }}">
+
+                    <div class="unit-title-div">
+                        <div class="unit-header-wrapper">
+                            <h1 class="medium-text light-color">{{ unit["costs"][0]["value"] }}</h1>
+                            <h1 class="medium-text light-color">{{ unit["name"] }}</h1>
+                            <h1><!-- Fictional --></h1>
+                        </div>
+                    </div>
+
+                    <div class="unit-main">
+                        
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
 
     </main>
 
