@@ -89,14 +89,31 @@
                             </tr>
                             
                             {% if unit['type'] == 'model' %}
+
                                 <tr>
                                     <td>{{ unit['name'] }}</td>
                                     <td>
                                         {% for selection in unit['selections'] %}
-                                            {{ selection['name'] }}{% if not loop.last %}, {% endif %}
+                                            {{ selection['number'] }} x {{ selection['name'] }}{% if not loop.last %}, {% endif %}
                                         {% endfor %}
                                     </td>
                                 </tr>
+
+                            {% elif unit['type'] == 'unit' %}
+
+                                {% for selection in unit['selections'] %}
+
+                                    <tr>
+                                        <td>{{ selection['number'] }} {{ selection['name'] }}</td>
+                                        <td>
+                                            {% for selec in selection['selections'] %}
+                                                {{ selec['number'] }} x {{ selec['name'] }}{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+
                             {% endif %}
 
                         </table>

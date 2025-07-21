@@ -82,8 +82,6 @@ def find_units(json_roster: dict) -> list:
 
         unit['ranged_choices'] = unit_ranged_weapons
         unit['melee_choices'] = unit_melee_weapons
-
-        pprint(unit['ranged_choices'])
     
     sort_units_fields(output)
 
