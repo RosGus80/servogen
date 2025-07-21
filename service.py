@@ -44,6 +44,27 @@ def sort_units_fields(units: list) -> list:
     return units
 
 
+def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
+    output = []
+
+    if unit['type'] == 'unit':
+        # Iterate through selections' (models') weapon loadout
+        for selection in unit['selections']:
+            for weapon in selection['selections']:
+                if (weapon['profiles'][0]['typeName'] == 'Ranged Weapons' and ranged
+                or weapon['profiles'][0]['typeName'] == 'Melee Weapons' and not ranged):
+                    output.append(weapon)
+    elif unit['type'] == 'model':
+        # Just take model's weapons
+        for weapon in unit['selections']:
+            if (weapon['profiles'][0]['typeName'] == 'Ranged Weapons' and ranged
+                or weapon['profiles'][0]['typeName'] == 'Melee Weapons' and not ranged):
+                    output.append(weapon)
+    
+    return output
+
+
+
 def find_units(json_roster: dict) -> list:
     selections = json_roster['forces'][0]['selections']
     output = []
@@ -54,9 +75,18 @@ def find_units(json_roster: dict) -> list:
                 output.append(selection)
         except KeyError:
             continue
+
+    for unit in output:
+        unit_ranged_weapons: list = find_unit_weapons(unit, True)
+        unit_melee_weapons: list = find_unit_weapons(unit, False)
+
+        unit['ranged_choices'] = unit_ranged_weapons
+        unit['melee_choices'] = unit_melee_weapons
+
+        pprint(unit['ranged_choices'])
     
     sort_units_fields(output)
-    
+
     return output
 
 

@@ -1,6 +1,8 @@
 * {
     margin: 0;
     cursor: default;
+
+    line-height: 20px;
     
     font-family: sans-serif;
 }
@@ -116,11 +118,14 @@ pre {
     margin-top: 2.5%;
 }
 
+.selections-table {
+    margin-block: 5%;
+}
+
 table {
     border-collapse: collapse;
 
     width: 100%;
-    margin-block: 2.5%;
 
     font-size: medium;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -136,7 +141,7 @@ th {
     background-color: var(--color-teritary);
 }
 
-tr:nth-child(even) {
+tr:nth-child(odd) {
     background-color: var(--color-light);
 }
 
@@ -180,7 +185,8 @@ footer {
 
 .unit-title-div {
     width: 100%;
-    height: 5vh;
+    
+    padding-block: 2.5%;
 
     background-color: var(--color-primary);
 }
@@ -202,5 +208,5 @@ footer {
 
 .unit-main {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
