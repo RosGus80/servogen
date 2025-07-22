@@ -10,7 +10,7 @@ setup(
         'Jinja2==3.1.6',
         'setuptools==65.5.0'
     ],
-    entry_points={'console_scripts': ['servogen=src.main:main']},
+    entry_points={'console_scripts': ['servogen=servogen.main:main']},
     package_dir={'': 'src'},
     package_data={
         'servogen': ['templates/*.html']
