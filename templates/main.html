@@ -17,7 +17,7 @@
                 const newY = targetDiv.getBoundingClientRect().top + window.scrollY + yOffset;
                 window.scrollTo({top: newY, behavior: 'smooth'});
 
-                // TODO: Add color highlighting effect
+                // TODO: Add a color highlighting effect
             }
         }
     </script>
@@ -70,149 +70,7 @@
         <div class="units-div">
 
             {% for unit in units %}
-                <div class="unit-wrapper" id="{{ unit['id'] }}">
-
-                    <div class="unit-title-div">
-                        <div class="unit-header-wrapper">
-                            <h1 class="medium-text light-color">{{ unit["costs"][0]["value"] }}</h1>
-                            <h1 class="medium-text light-color">{{ unit["name"] }}</h1>
-                            <h1><!-- Fictional --></h1>
-                        </div>
-                    </div>
-
-                    <div class="unit-main">
-
-                        <table>
-                            <tr>
-                                <th>Models</th>
-                                <th>Options</th>
-                            </tr>
-                            
-                            {% if unit['type'] == 'model' %}
-
-                                <tr>
-                                    <td>{{ unit['name'] }}</td>
-                                    <td>
-                                        {% for selection in unit['selections'] %}
-                                            {% if selection['number'] > 1 %}{{ selection['number'] }} x {% endif %}{{ selection['name'] }}{% if not loop.last %}, {% endif %}
-                                        {% endfor %}
-                                    </td>
-                                </tr>
-
-                            {% elif unit['type'] == 'unit' %}
-
-                                {% for selection in unit['selections'] %}
-
-                                    <tr>
-                                        <td>{{ selection['number'] }} {{ selection['name'] }}</td>
-                                        <td>
-                                            {% for selec in selection['selections'] %}
-                                                {% if selec['number'] > 1 %}{{ selec['number'] }} x {% endif %}{{ selec['name'] }}{% if not loop.last %}, {% endif %}
-                                            {% endfor %}
-                                        </td>
-                                    </tr>
-
-                                {% endfor %}
-
-                            {% endif %}
-
-                        </table>
-
-                        <table>
-                            <tr>
-                                <th>Unit</th>
-                                <th>M</th>
-                                <th>T</th>
-                                <th>SV</th>
-                                <th>W</th>
-                                <th>LD</th>
-                                <th>OC</th>
-                            </tr>
-
-                            <!-- Treat one-model units and non-one-model units differently -->
-                            {% if unit['type'] == 'model' %}
-                                <tr>
-                                    <td>{{ unit['name'] }}</td>
-
-                                    {% for char in unit['profiles'][0]['characteristics'] %}
-                                        <td>{{ char['$text'] }}</td>
-                                    {% endfor %}
-                                </tr>
-                            {% elif unit['type'] == 'unit' %}
-                                {% for selection in unit['selections'] %}
-                                    <tr>
-                                        <td>{{ selection['name'] }}</td>
-                                        {% for char in selection['profiles'][0]['characteristics'] %}
-                                            <td>{{ char['$text'] }}</td>
-                                        {% endfor %}
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                        </table>
-
-                        {% if unit['ranged_choices'] | length > 0 %}
-                            <table>
-                                <tr>
-                                    <th>Ranged Weapons</th>
-                                    <th>Range</th>
-                                    <th>A</th>
-                                    <th>BS</th>
-                                    <th>S</th>
-                                    <th>AP</th>
-                                    <th>D</th>
-                                    <th>Keywords</th>
-                                </tr>
-
-                                {% for weapon in unit['ranged_choices'] %}
-                                <tr>
-                                    {% for profile in weapon['profiles'] %}
-                                        {% if weapon['number'] > 1 %}
-                                            <td>{{ weapon['number'] }} x {{ profile['name'] }}</td>
-                                        {% else %}
-                                            <td>{{ profile['name'] }}</td>
-                                        {% endif %}
-
-                                        {% for char in profile['characteristics'] %}
-                                            <td>{{ char['$text'] }}</td>
-                                        {% endfor %}
-                                    {% endfor %}
-                                </tr>
-                                {% endfor %}
-                            </table>
-                        {% endif %}
-
-                        {% if unit['melee_choices'] | length > 0 %}
-                            <table>
-                                <tr>
-                                    <th>Melee Weapons</th>
-                                    <th>Range</th>
-                                    <th>A</th>
-                                    <th>WS</th>
-                                    <th>S</th>
-                                    <th>AP</th>
-                                    <th>D</th>
-                                    <th>Keywords</th>
-                                </tr>
-
-                                {% for weapon in unit['melee_choices'] %}
-                                    {% for profile in weapon['profiles'] %}
-                                    <tr>
-                                        {% if weapon['number'] > 1 %}
-                                            <td>{{ weapon['number'] }} x {{ profile['name'] }}</td>
-                                        {% else %}
-                                            <td>{{ profile['name'] }}</td>
-                                        {% endif %}
-
-                                        {% for char in profile['characteristics'] %}
-                                            <td>{{ char['$text'] }}</td>
-                                        {% endfor %}
-                                    </tr>
-                                    {% endfor %}
-                                {% endfor %}
-                            </table>
-                        {% endif %}
-                    </div>
-                </div>
+                {% include "unit.html" %}
             {% endfor %}
 
         </div>

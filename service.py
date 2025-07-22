@@ -74,12 +74,41 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
         for weapon in unit['selections']:
             if ('profiles' not in weapon.keys() 
                 or 'weapon' not in weapon['profiles'][0]['typeName'].lower()):
-                continue
+                
+                #  Fragile workaround! If facing problems, rewrite
+                if 'selections' in weapon.keys():
+                    weapon = weapon['selections'][0]
+                else:
+                    continue
+
             if (weapon['profiles'][0]['typeName'] == 'Ranged Weapons' and ranged
                 or weapon['profiles'][0]['typeName'] == 'Melee Weapons' and not ranged):
                     output.append(weapon)
+
+    # Combining same positions into one with a bigger number
+    merged = []
+
+    for weapon in output:
+        name = weapon.get("name")
+        profile = weapon.get("profiles", [{}])[0]
+        chars = profile.get("characteristics", [])
+        number = weapon.get("number", 1)
+
+        found = False
+        for existing in merged:
+            if (
+                existing.get("name") == name and
+                existing.get("profiles", [{}])[0].get("characteristics") == chars
+            ):
+                existing["number"] = existing.get("number", 1) + number
+                found = True
+                break
+
+        if not found:
+            merged.append(weapon.copy())
+
     
-    return output
+    return merged
 
 
 
