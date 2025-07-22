@@ -180,6 +180,8 @@ footer {
     width: 100%;
 
     border-radius: 10px;
+    border: 1px solid var(--color-teritary);
+
     overflow: hidden;
 }
 
@@ -214,4 +216,22 @@ footer {
 .keyword {
     color: var(--color-contrast);
     font-weight: 600;
+}
+
+.collapsible-table {
+    border: 1px solid var(--color-teritary);
+    padding: 10px;
+}
+
+.collapsible-table table {
+    margin-top: 2%;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.collapsible-table th,
+.collapsible-table td {
+    border: 1px solid var(--color-teritary);
+    padding: 6px;
+    text-align: left;
 }

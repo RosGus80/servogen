@@ -10,6 +10,7 @@
 
     <div class="unit-main">
 
+        <!-- Table of models in unit -->
         <table>
             <tr>
                 <th>Models</th>
@@ -46,6 +47,7 @@
 
         </table>
 
+        <!-- Table of model chars -->
         <table>
             <tr>
                 <th>Unit</th>
@@ -68,16 +70,35 @@
                 </tr>
             {% elif unit['type'] == 'unit' %}
                 {% for selection in unit['selections'] %}
-                    <tr>
-                        <td>{{ selection['name'] }}</td>
-                        {% for char in selection['profiles'][0]['characteristics'] %}
-                            <td>{{ char['$text'] }}</td>
+                    {% if 'profiles' in selection.keys() %}
+
+                        <tr>
+                            <td>{{ selection['name'] }}</td>
+                            {% for char in selection['profiles'][0]['characteristics'] %}
+                                <td>{{ char['$text'] }}</td>
+                            {% endfor %}
+                        </tr>
+
+                    {% elif 'profiles' in unit.keys() %}
+                        {% for profile in unit['profiles'] if profile['name'] == unit['name'] %}
+                            <tr>
+                                <td>{{ profile['name'] }}</td>
+
+                                {% for char in profile['characteristics'] %}
+                                    <td>{{ char['$text'] }}</td>
+                                {% endfor %}
+                            </tr>
                         {% endfor %}
-                    </tr>
+                    {% else %}
+
+                        <h1>Weird, send me a json, ill look it up</h1>
+
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         </table>
 
+        <!-- Table of ranged weapons -->
         {% if unit['ranged_choices'] | length > 0 %}
             <table>
                 <tr>
@@ -91,24 +112,23 @@
                     <th>Keywords</th>
                 </tr>
 
-                {% for weapon in unit['ranged_choices'] %}
+                {% for profile in unit['ranged_choices'] %}
                 <tr>
-                    {% for profile in weapon['profiles'] %}
-                        {% if weapon['number'] > 1 %}
-                            <td>{{ weapon['number'] }} x {{ profile['name'] }}</td>
-                        {% else %}
-                            <td>{{ profile['name'] }}</td>
-                        {% endif %}
+                    {% if profile['number'] > 1 %}
+                        <td>{{ profile['number'] }} x {{ profile['name'] }}</td>
+                    {% else %}
+                        <td>{{ profile['name'] }}</td>
+                    {% endif %}
 
-                        {% for char in profile['characteristics'] %}
-                            <td>{{ char['$text'] }}</td>
-                        {% endfor %}
+                    {% for char in profile['characteristics'] %}
+                        <td>{{ char['$text'] }}</td>
                     {% endfor %}
                 </tr>
                 {% endfor %}
             </table>
         {% endif %}
 
+        <!-- Table of melee weapons -->
         {% if unit['melee_choices'] | length > 0 %}
             <table>
                 <tr>
@@ -122,22 +142,40 @@
                     <th>Keywords</th>
                 </tr>
 
-                {% for weapon in unit['melee_choices'] %}
-                    {% for profile in weapon['profiles'] %}
-                    <tr>
-                        {% if weapon['number'] > 1 %}
-                            <td>{{ weapon['number'] }} x {{ profile['name'] }}</td>
-                        {% else %}
-                            <td>{{ profile['name'] }}</td>
-                        {% endif %}
+                {% for profile in unit['melee_choices'] %}
+                <tr>
+                    {% if profile['number'] > 1 %}
+                        <td>{{ profile['number'] }} x {{ profile['name'] }}</td>
+                    {% else %}
+                        <td>{{ profile['name'] }}</td>
+                    {% endif %}
 
-                        {% for char in profile['characteristics'] %}
-                            <td>{{ char['$text'] }}</td>
-                        {% endfor %}
-                    </tr>
+                    {% for char in profile['characteristics'] %}
+                        <td>{{ char['$text'] }}</td>
                     {% endfor %}
+                </tr>
                 {% endfor %}
             </table>
         {% endif %}
+
+        <!-- Conditional collapsable table of extra abilities -->
+        {% for table_name, profiles in unit.get("extra_tables", {}).items() %}
+            <details class="collapsible-table">
+                <summary><strong>{{ table_name }}</strong></summary>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Ability</th>
+                    </tr>
+                    {% for profile in profiles %}
+                    <tr>
+                        <td>{{ profile['name'] }}</td>
+                        <td>{{ profile['characteristics'][0]['$text'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </details>
+        {% endfor %}
+
     </div>
 </div>

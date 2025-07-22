@@ -2,7 +2,7 @@ from jinja2 import Environment, FileSystemLoader
 from service import json_load, bundle_css, find_units, find_rules, normalise_markup
 
 
-roster: dict = json_load('yeay.json')['roster']
+roster: dict = json_load('ch.json')['roster']
 
 
 environment = Environment(loader=FileSystemLoader('templates/'))

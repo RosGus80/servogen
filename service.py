@@ -57,6 +57,9 @@ def sort_units_fields(units: list) -> list:
 
 
 def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
+    """
+    CAREFUL: doesnt return full weapon object, only its profile
+    """
     output = []
 
     if unit['type'] == 'unit':
@@ -66,9 +69,13 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
                 if ('profiles' not in weapon.keys() 
                 or 'weapon' not in weapon['profiles'][0]['typeName'].lower()):
                     continue
-                if (weapon['profiles'][0]['typeName'] == 'Ranged Weapons' and ranged
-                or weapon['profiles'][0]['typeName'] == 'Melee Weapons' and not ranged):
-                    output.append(weapon)
+
+                for profile in weapon['profiles']:
+                    if (profile['typeName'] == 'Ranged Weapons' and ranged
+                    or profile['typeName'] == 'Melee Weapons' and not ranged):
+                        profile['number'] = weapon['number']
+                        output.append(profile)
+
     elif unit['type'] == 'model':
         # Just take model's weapons
         for weapon in unit['selections']:
@@ -80,25 +87,26 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
                     weapon = weapon['selections'][0]
                 else:
                     continue
-
-            if (weapon['profiles'][0]['typeName'] == 'Ranged Weapons' and ranged
-                or weapon['profiles'][0]['typeName'] == 'Melee Weapons' and not ranged):
-                    output.append(weapon)
+            
+            for profile in weapon['profiles']:
+                if (profile['typeName'] == 'Ranged Weapons' and ranged
+                    or profile['typeName'] == 'Melee Weapons' and not ranged):
+                    profile['number'] = weapon['number']
+                    output.append(profile)
 
     # Combining same positions into one with a bigger number
     merged = []
 
     for weapon in output:
         name = weapon.get("name")
-        profile = weapon.get("profiles", [{}])[0]
-        chars = profile.get("characteristics", [])
+        chars = weapon.get("characteristics", [])
         number = weapon.get("number", 1)
 
         found = False
         for existing in merged:
             if (
                 existing.get("name") == name and
-                existing.get("profiles", [{}])[0].get("characteristics") == chars
+                existing.get("characteristics") == chars
             ):
                 existing["number"] = existing.get("number", 1) + number
                 found = True
@@ -130,6 +138,15 @@ def find_units(json_roster: dict) -> list:
         unit['ranged_choices'] = unit_ranged_weapons
         unit['melee_choices'] = unit_melee_weapons
     
+        # Get extra abilities for separate tables
+        ignored_types = {"Unit", "Melee Weapons", "Ranged Weapons"}
+        unit['extra_tables'] = {}
+
+        for profile in unit.get("profiles", []):
+            type_name = profile.get("typeName")
+            if type_name and type_name not in ignored_types:
+                unit['extra_tables'].setdefault(type_name, []).append(profile)
+
     sort_units_fields(output)
 
     return output
