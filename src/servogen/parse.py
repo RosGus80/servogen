@@ -1,4 +1,4 @@
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, PackageLoader, select_autoescape
 from servogen.service import json_load, bundle_css, find_units, find_rules, normalise_markup, find_faction_rule
 from importlib.resources import files
 
@@ -34,8 +34,13 @@ def render_html(input_json_path: str, output_path: str, collapse: bool = False):
     roster: dict = json_load(input_json_path)['roster']
 
     template_dir = files("servogen.templates")
-    environment = Environment(loader=FileSystemLoader(str(template_dir)))
-    template = environment.get_template('main.html')
+    env = Environment(
+        loader=PackageLoader('servogen', 'templates'),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
+
+    template = env.get_template('main.html')
+
 
     # Setting env vars
     nr_link: str = roster['generatedBy']
