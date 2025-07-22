@@ -87,7 +87,7 @@ def render_html(input_json_path: str, output_path: str, collapse: bool = False):
     )
 
     # Writing to a file
-    with open(output_path, "w") as file:
+    with open(f'{output_path}/{roster_name}.html', "w") as file:
         normalised_content: str = normalise_markup(content)
         file.write(normalised_content)
 

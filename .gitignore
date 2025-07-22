@@ -3,3 +3,7 @@ __pycache__
 .idea
 /outputs
 /test/*.json
+.log
+*.egg-info
+.DS_Store
+/build

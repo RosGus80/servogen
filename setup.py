@@ -1,0 +1,14 @@
+import os
+
+from setuptools import setup, find_packages
+
+setup(
+    name='servogen',
+    version='0.0.1',
+    packages=find_packages(exclude=["tests*"]),
+    install_requires=[
+        'Jinja2==3.1.6',
+        'setuptools==65.5.0'
+    ],
+    entry_points={'console_scripts': ['servogen=src.main:main']},
+)
