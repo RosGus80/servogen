@@ -98,4 +98,4 @@ def render_html(input_json_path: str, output_path: str, collapse: bool = False):
         normalised_content: str = normalise_markup(content)
         file.write(normalised_content)
 
-    bundle_css(output_path, './css/style.css')
+    bundle_css(output_path, 'css/style.css')
