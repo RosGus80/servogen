@@ -18,7 +18,7 @@ A work-in-progress **CLI tool** that transforms your **[NewRecruit.eu](https://n
 * Roster statistics and tactical summaries  
 * Customisable color themes
 
-## 📜 License
+## License
 
 This project is licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** License.  
 You are free to use, modify, and distribute it — just please credit the original author.  
