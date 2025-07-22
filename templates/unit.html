@@ -159,23 +159,40 @@
         {% endif %}
 
         <!-- Conditional collapsable table of extra abilities -->
-        {% for table_name, profiles in unit.get("extra_tables", {}).items() %}
-            <details class="collapsible-table">
-                <summary><strong>{{ table_name }}</strong></summary>
+         {% if prefs['collapse_abilities'] %}
+            {% for table_name, profiles in unit.get("extra_tables", {}).items() %}
+                <details class="collapsible-table">
+                    <summary><strong>{{ table_name }}</strong></summary>
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Ability</th>
+                        </tr>
+                        {% for profile in profiles %}
+                        <tr>
+                            <td>{{ profile['name'] }}</td>
+                            <td><pre>{{ profile['characteristics'][0]['$text'] }}</pre></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </details>
+            {% endfor %}
+        {% else %}  
+            {% for table_name, profiles in unit.get("extra_tables", {}).items() %}
                 <table>
                     <tr>
-                        <th>Name</th>
+                        <th>{{ table_name }}</th>
                         <th>Ability</th>
                     </tr>
                     {% for profile in profiles %}
-                    <tr>
-                        <td>{{ profile['name'] }}</td>
-                        <td>{{ profile['characteristics'][0]['$text'] }}</td>
-                    </tr>
+                        <tr>
+                            <td>{{ profile['name'] }}</td>
+                            <td><pre>{{ profile['characteristics'][0]['$text'] }}</pre></td>
+                        </tr>
                     {% endfor %}
                 </table>
-            </details>
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
 
     </div>
 </div>

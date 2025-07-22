@@ -1,8 +1,9 @@
 from jinja2 import Environment, FileSystemLoader
-from service import json_load, bundle_css, find_units, find_rules, normalise_markup
+from service import json_load, bundle_css, find_units, find_rules, normalise_markup, load_prefs
 
 
 roster: dict = json_load('ch.json')['roster']
+prefs = load_prefs()
 
 
 environment = Environment(loader=FileSystemLoader('templates/'))
@@ -65,6 +66,8 @@ units = find_units(roster)
 rules = find_rules(units)
 
 content = template.render(
+    prefs=prefs,
+
     roster_name=roster_name,
     cost_string=cost_string,
     cost_value=cost_value,
@@ -88,4 +91,4 @@ with open("outputs/out.html", "w") as file:
     normalised_content: str = normalise_markup(content)
     file.write(normalised_content)
 
-# bundle_css('outputs/out.html', 'css/style.css')
+bundle_css('outputs/out.html', 'css/style.css')
