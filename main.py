@@ -1,15 +1,15 @@
 from jinja2 import Environment, FileSystemLoader
-from service import json_load, bundle_css, find_units, find_rules
+from service import json_load, bundle_css, find_units, find_rules, normalise_markup
 
 
-roster: dict = json_load('roster.json')['roster']
+roster: dict = json_load('yeay.json')['roster']
 
 
 environment = Environment(loader=FileSystemLoader('templates/'))
 template = environment.get_template('main.html')
 
 
-def find_detachment() -> dict | None:
+def find_detachment() -> dict:
     """
     finds a dict of detachment info. Could be always on 
     roster['forces'][0]['selections'][1], but i wouldnt bet on it. 
@@ -18,7 +18,7 @@ def find_detachment() -> dict | None:
     for entry in roster['forces'][0]['selections']:
         if entry['name'] == 'Detachment':
             return entry
-    return None
+    return {}
         
 
 # All the env vars for template
@@ -46,13 +46,20 @@ faction_name: str = roster['forces'][0]['catalogueName']
 faction_rule_name: str = roster['forces'][0]['rules'][0]['name']
 faction_rule_description: str = roster['forces'][0]['rules'][0]['description']
 
-detach_entry: dict | None = find_detachment()
-if detach_entry is None:
+detach_entry: dict = find_detachment()
+
+if 'selections' not in detach_entry.keys():
     detachment_name = 'No detachment'
     detachment_description = ''
 else:
     detachment_name: str = detach_entry['selections'][0]['name']
-    detachment_description: str = detach_entry['selections'][0]['profiles'][0]['characteristics'][0]['$text']
+
+    if 'profiles' in detach_entry['selections'][0].keys():
+        detachment_description: str = detach_entry['selections'][0]['profiles'][0]['characteristics'][0]['$text']
+    elif 'rules' in detach_entry['selections'][0].keys():
+        detachment_description: str = detach_entry['selections'][0]['rules'][0]['description']
+    else:
+        detachment_description: str = 'Unknown json structure, wtf'
 
 units = find_units(roster)
 rules = find_rules(units)
@@ -78,6 +85,7 @@ content = template.render(
 
 
 with open("outputs/out.html", "w") as file:
-    file.write(content)
+    normalised_content: str = normalise_markup(content)
+    file.write(normalised_content)
 
 # bundle_css('outputs/out.html', 'css/style.css')

@@ -210,3 +210,8 @@ footer {
     display: flex;
     flex-direction: column;
 }
+
+.keyword {
+    color: var(--color-contrast);
+    font-weight: 600;
+}

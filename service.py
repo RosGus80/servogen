@@ -1,10 +1,24 @@
 import json
+import re
 from pprint import pprint
 
 def json_load(path: str):
     with open(path, 'r') as file:
         return json.load(file)
     
+
+def normalise_markup(html: str) -> str:
+    """
+    Takes full html string and converts newrecruit-specific marking 
+    symbols to readbale html
+    """
+
+    # Keywords first (^^...^^ inside)
+    text: str = re.sub(r'\^\^([^\^]+)\^\^', r'<span class="keyword">\1</span>', html)
+    # Bold (**...**)
+    text = re.sub(r'\*\*([^\*]+)\*\*', r'<strong>\1</strong>', text)
+    
+    return text
 
 def bundle_css(html_path: str, css_path: str) -> None:
     """Function that takes a css file that was previously linked by href and 
@@ -17,8 +31,6 @@ def bundle_css(html_path: str, css_path: str) -> None:
     with open(css_path, "r", encoding="utf-8") as css_file:
         css = css_file.read()
 
-    # Replace the <link> tag with inline <style>
-    import re
     html = re.sub(
         r'<link\s+rel="stylesheet"\s+href="[^"]*"\s*/?>',
         f"<style>\n{css}\n</style>",
@@ -51,12 +63,18 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
         # Iterate through selections' (models') weapon loadout
         for selection in unit['selections']:
             for weapon in selection['selections']:
+                if ('profiles' not in weapon.keys() 
+                or 'weapon' not in weapon['profiles'][0]['typeName'].lower()):
+                    continue
                 if (weapon['profiles'][0]['typeName'] == 'Ranged Weapons' and ranged
                 or weapon['profiles'][0]['typeName'] == 'Melee Weapons' and not ranged):
                     output.append(weapon)
     elif unit['type'] == 'model':
         # Just take model's weapons
         for weapon in unit['selections']:
+            if ('profiles' not in weapon.keys() 
+                or 'weapon' not in weapon['profiles'][0]['typeName'].lower()):
+                continue
             if (weapon['profiles'][0]['typeName'] == 'Ranged Weapons' and ranged
                 or weapon['profiles'][0]['typeName'] == 'Melee Weapons' and not ranged):
                     output.append(weapon)

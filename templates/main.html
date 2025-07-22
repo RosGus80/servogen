@@ -94,7 +94,7 @@
                                     <td>{{ unit['name'] }}</td>
                                     <td>
                                         {% for selection in unit['selections'] %}
-                                            {{ selection['number'] }} x {{ selection['name'] }}{% if not loop.last %}, {% endif %}
+                                            {% if selection['number'] > 1 %}{{ selection['number'] }} x {% endif %}{{ selection['name'] }}{% if not loop.last %}, {% endif %}
                                         {% endfor %}
                                     </td>
                                 </tr>
@@ -107,7 +107,7 @@
                                         <td>{{ selection['number'] }} {{ selection['name'] }}</td>
                                         <td>
                                             {% for selec in selection['selections'] %}
-                                                {{ selec['number'] }} x {{ selec['name'] }}{% if not loop.last %}, {% endif %}
+                                                {% if selec['number'] > 1 %}{{ selec['number'] }} x {% endif %}{{ selec['name'] }}{% if not loop.last %}, {% endif %}
                                             {% endfor %}
                                         </td>
                                     </tr>
@@ -150,63 +150,67 @@
                             {% endif %}
                         </table>
 
-                        <table>
-                            <tr>
-                                <th>Ranged Weapons</th>
-                                <th>Range</th>
-                                <th>A</th>
-                                <th>BS</th>
-                                <th>S</th>
-                                <th>AP</th>
-                                <th>D</th>
-                                <th>Keywords</th>
-                            </tr>
-
-                            {% for weapon in unit['ranged_choices'] %}
-                            <tr>
-                                {% for profile in weapon['profiles'] %}
-                                    {% if weapon['number'] > 1 %}
-                                        <td>{{ weapon['number'] }} x {{ profile['name'] }}</td>
-                                    {% else %}
-                                        <td>{{ profile['name'] }}</td>
-                                    {% endif %}
-
-                                    {% for char in profile['characteristics'] %}
-                                        <td>{{ char['$text'] }}</td>
-                                    {% endfor %}
-                                {% endfor %}
-                            </tr>
-                            {% endfor %}
-                        </table>
-
-                        <table>
-                            <tr>
-                                <th>Melee Weapons</th>
-                                <th>Range</th>
-                                <th>A</th>
-                                <th>WS</th>
-                                <th>S</th>
-                                <th>AP</th>
-                                <th>D</th>
-                                <th>Keywords</th>
-                            </tr>
-
-                            {% for weapon in unit['melee_choices'] %}
-                                {% for profile in weapon['profiles'] %}
+                        {% if unit['ranged_choices'] | length > 0 %}
+                            <table>
                                 <tr>
-                                    {% if weapon['number'] > 1 %}
-                                        <td>{{ weapon['number'] }} x {{ profile['name'] }}</td>
-                                    {% else %}
-                                        <td>{{ profile['name'] }}</td>
-                                    {% endif %}
+                                    <th>Ranged Weapons</th>
+                                    <th>Range</th>
+                                    <th>A</th>
+                                    <th>BS</th>
+                                    <th>S</th>
+                                    <th>AP</th>
+                                    <th>D</th>
+                                    <th>Keywords</th>
+                                </tr>
 
-                                    {% for char in profile['characteristics'] %}
-                                        <td>{{ char['$text'] }}</td>
+                                {% for weapon in unit['ranged_choices'] %}
+                                <tr>
+                                    {% for profile in weapon['profiles'] %}
+                                        {% if weapon['number'] > 1 %}
+                                            <td>{{ weapon['number'] }} x {{ profile['name'] }}</td>
+                                        {% else %}
+                                            <td>{{ profile['name'] }}</td>
+                                        {% endif %}
+
+                                        {% for char in profile['characteristics'] %}
+                                            <td>{{ char['$text'] }}</td>
+                                        {% endfor %}
                                     {% endfor %}
                                 </tr>
                                 {% endfor %}
-                            {% endfor %}
-                        </table>
+                            </table>
+                        {% endif %}
+
+                        {% if unit['melee_choices'] | length > 0 %}
+                            <table>
+                                <tr>
+                                    <th>Melee Weapons</th>
+                                    <th>Range</th>
+                                    <th>A</th>
+                                    <th>WS</th>
+                                    <th>S</th>
+                                    <th>AP</th>
+                                    <th>D</th>
+                                    <th>Keywords</th>
+                                </tr>
+
+                                {% for weapon in unit['melee_choices'] %}
+                                    {% for profile in weapon['profiles'] %}
+                                    <tr>
+                                        {% if weapon['number'] > 1 %}
+                                            <td>{{ weapon['number'] }} x {{ profile['name'] }}</td>
+                                        {% else %}
+                                            <td>{{ profile['name'] }}</td>
+                                        {% endif %}
+
+                                        {% for char in profile['characteristics'] %}
+                                            <td>{{ char['$text'] }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            </table>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
