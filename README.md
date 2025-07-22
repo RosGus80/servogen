@@ -2,7 +2,7 @@
 
 A work-in-progress **CLI tool** that transforms your **[NewRecruit.eu](https://newrecruit.eu)** rosters from raw json into clean, styled, and navigable **HTML** files — perfect for printing, sharing, or referencing during gameplay.
 
-> ⚠️ This tool is currently under development.
+> ⚠️ This tool is currently under development. If you face any issues, please copy the error message and contact me (preferably by opening an issue thread on Github), sharing your json file that caused the error
 
 ## Features
 

@@ -1,6 +1,7 @@
 from jinja2 import Environment, FileSystemLoader
 from src.service import json_load, bundle_css, find_units, find_rules, normalise_markup, find_faction_rule
-        
+from importlib.resources import files
+
 
 # All the env vars for template
 
@@ -32,7 +33,8 @@ def find_detachment(roster) -> dict:
 def render_html(input_json_path: str, output_path: str, collapse: bool = False):
     roster: dict = json_load(input_json_path)['roster']
 
-    environment = Environment(loader=FileSystemLoader('templates/'))
+    template_dir = files("servogen.templates")
+    environment = Environment(loader=FileSystemLoader(str(template_dir)))
     template = environment.get_template('main.html')
 
     # Setting env vars

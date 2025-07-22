@@ -11,4 +11,8 @@ setup(
         'setuptools==65.5.0'
     ],
     entry_points={'console_scripts': ['servogen=src.main:main']},
+    package_data={
+        'servogen': ['templates/*.html']
+    },
+    include_package_data=True,
 )
