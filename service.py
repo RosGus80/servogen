@@ -71,11 +71,7 @@ def sort_units_fields(units: list) -> list:
 
 def find_faction_rule(roster: dict) -> tuple[str, str]:
     force = roster['forces'][0]
-
-    if "rules" in force and force["rules"]:
-        rule = force["rules"][0]
-        return (rule["name"], rule["description"])
-
+    
     faction_name = None
     for unit in force.get("selections", []):
         for cat in unit.get("categories", []):

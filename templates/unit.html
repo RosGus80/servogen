@@ -194,5 +194,18 @@
             {% endfor %}
         {% endif %}
 
+        <div class="unit-meta">
+            <h1 class="medium-text"><strong>Rules:</strong>
+                {% for rule in unit.get('rules', []) %}
+                    {{ rule['name'] }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </h1>
+
+            <h1 class="medium-text"><strong>Categories:</strong>
+                {% for cat in unit.get('categories', []) %}
+                    {{ cat['name'] }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </h1>
+        </div>
     </div>
 </div>

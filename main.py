@@ -44,7 +44,6 @@ cost_value: int = roster['costs'][0]['value']
 cost_limit: int = roster['costLimits'][0]['value']
 
 faction_name: str = roster['forces'][0]['catalogueName']
-
 faction_rule_name, faction_rule_description = find_faction_rule(roster)
 
 detach_entry: dict = find_detachment()
@@ -91,4 +90,4 @@ with open("outputs/out.html", "w") as file:
     normalised_content: str = normalise_markup(content)
     file.write(normalised_content)
 
-bundle_css('outputs/out.html', 'css/style.css')
+# bundle_css('outputs/out.html', 'css/style.css')

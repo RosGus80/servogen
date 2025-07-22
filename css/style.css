@@ -235,3 +235,8 @@ footer {
     padding: 6px;
     text-align: left;
 }
+
+.unit-meta {
+    margin-block: 1.25%;
+    padding-inline: 2%;
+}
