@@ -2,7 +2,7 @@ from jinja2 import Environment, FileSystemLoader
 from service import json_load, bundle_css, find_units, find_rules, normalise_markup, load_prefs, find_faction_rule
 
 
-roster: dict = json_load('ch.json')['roster']
+roster: dict = json_load('bugz.json')['roster']
 prefs = load_prefs()
 
 
