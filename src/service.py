@@ -7,10 +7,6 @@ from pprint import pprint
 def json_load(path: str) -> dict:
     with open(path, 'r') as file:
         return json.load(file)
-    
-
-def load_prefs() -> dict:
-    return json_load('preferences.json')
 
 
 def change_prefs(key: str, value) -> None:

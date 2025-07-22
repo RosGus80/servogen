@@ -163,7 +163,7 @@
         {% endif %}
 
         <!-- Conditional collapsable table of extra abilities -->
-         {% if prefs['collapse_abilities'] %}
+         {% if collapse %}
             {% for table_name, profiles in unit.get("extra_tables", {}).items() %}
                 <details class="collapsible-table">
                     <summary><strong>{{ table_name }}</strong></summary>
