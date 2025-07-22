@@ -37,7 +37,12 @@ def main():
     args = parser.parse_args()
 
     input_path = args.render
-    output_path = args.output if args.output else os.path.splitext(input_path)[0] + ".html"
+    if args.output:
+        output_path = args.output
+    else:
+        input_dir = os.path.dirname(input_path)
+        input_basename = os.path.splitext(os.path.basename(input_path))[0]
+        output_path = os.path.join(input_dir, input_basename + ".html")
 
     render_html(input_path, output_path, collapse=args.collapsible)
 
