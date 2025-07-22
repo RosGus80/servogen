@@ -71,7 +71,7 @@ def sort_units_fields(units: list) -> list:
 
 def find_faction_rule(roster: dict) -> tuple[str, str]:
     force = roster['forces'][0]
-    
+
     faction_name = None
     for unit in force.get("selections", []):
         for cat in unit.get("categories", []):
@@ -112,8 +112,10 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
 
     if unit['type'] == 'unit':
         # Iterate through selections' (models') weapon loadout
-        for selection in unit['selections']:
-            for weapon in selection['selections']:
+        model_selections = unit.get('selections', [])
+        for selection in model_selections:
+            weapon_selections = selection.get('selections', [])
+            for weapon in weapon_selections:
                 if ('profiles' not in weapon.keys() 
                 or 'weapon' not in weapon['profiles'][0]['typeName'].lower()):
                     continue
@@ -126,7 +128,8 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
 
     elif unit['type'] == 'model':
         # Just take model's weapons
-        for weapon in unit['selections']:
+        selections = unit.get('selections', [])
+        for weapon in selections:
             if ('profiles' not in weapon.keys() 
                 or 'weapon' not in weapon['profiles'][0]['typeName'].lower()):
                 
@@ -167,7 +170,6 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
     return merged
 
 
-
 def find_units(json_roster: dict) -> list:
     selections = json_roster['forces'][0]['selections']
     output = []
@@ -196,6 +198,9 @@ def find_units(json_roster: dict) -> list:
                 unit['extra_tables'].setdefault(type_name, []).append(profile)
 
     sort_units_fields(output)
+
+    with open('a.json', 'w') as file:
+        file.write(json.dumps(output))     
 
     return output
 

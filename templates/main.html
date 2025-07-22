@@ -62,7 +62,11 @@
                 <tr onclick="onIdClick('{{ unit['id'] }}')">
                     <td>{{ unit["name"] }}</td>
                     <td>{{ unit["categories"][0]["name"] }}</td>
-                    <td>{{ unit["costs"][0]["value"] }}</td>
+                    {% if 'costs' in unit.keys() %}
+                        <td>{{ unit["costs"][0]["value"] }}</td>
+                    {% else %}
+                        <td>No cost</td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>
