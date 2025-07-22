@@ -1,8 +1,8 @@
 from jinja2 import Environment, FileSystemLoader
-from service import json_load, bundle_css, find_units, find_rules, normalise_markup, load_prefs
+from service import json_load, bundle_css, find_units, find_rules, normalise_markup, load_prefs, find_faction_rule
 
 
-roster: dict = json_load('ALL.json')['roster']
+roster: dict = json_load('ALL(1).json')['roster']
 prefs = load_prefs()
 
 
@@ -44,8 +44,8 @@ cost_value: int = roster['costs'][0]['value']
 cost_limit: int = roster['costLimits'][0]['value']
 
 faction_name: str = roster['forces'][0]['catalogueName']
-faction_rule_name: str = roster['forces'][0]['rules'][0]['name']
-faction_rule_description: str = roster['forces'][0]['rules'][0]['description']
+
+faction_rule_name, faction_rule_description = find_faction_rule(roster)
 
 detach_entry: dict = find_detachment()
 

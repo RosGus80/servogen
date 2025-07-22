@@ -1,6 +1,8 @@
 import json
 import re
+from collections import Counter
 from pprint import pprint
+
 
 def json_load(path: str) -> dict:
     with open(path, 'r') as file:
@@ -65,6 +67,45 @@ def sort_units_fields(units: list) -> list:
         categories.sort(key=lambda x: x['primary'], reverse=True)
 
     return units
+
+
+def find_faction_rule(roster: dict) -> tuple[str, str]:
+    force = roster['forces'][0]
+
+    if "rules" in force and force["rules"]:
+        rule = force["rules"][0]
+        return (rule["name"], rule["description"])
+
+    faction_name = None
+    for unit in force.get("selections", []):
+        for cat in unit.get("categories", []):
+            if cat["name"].startswith("Faction: "):
+                faction_name = cat["name"].replace("Faction: ", "")
+                break
+        if faction_name:
+            break
+
+    if not faction_name:
+        return ("Unknown", "Faction not found in unit categories")
+
+    rules = []
+    for unit in force.get("selections", []):
+        categories = [c["name"] for c in unit.get("categories", [])]
+        if f"Faction: {faction_name}" in categories:
+            for rule in unit.get("rules", []):
+                rules.append((rule["name"], rule["description"]))
+            # Also check immediate children (1 level deep)
+            for child in unit.get("selections", []):
+                for rule in child.get("rules", []):
+                    rules.append((rule["name"], rule["description"]))
+
+    if not rules:
+        return ("Unknown", f"No faction rules found for '{faction_name}'")
+
+    most_common, _ = Counter(rules).most_common(1)[0]
+    return most_common
+
+
 
 
 def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
@@ -163,23 +204,18 @@ def find_units(json_roster: dict) -> list:
     return output
 
 
-def find_rules(units: list) -> dict[str, tuple[str, str]]:
+def find_rules(units: list[dict]) -> dict[str, tuple[str, str]]:
     output = {}
 
+    def extract_rules(entry: dict):
+        for rule in entry.get("rules", []):
+            output[rule["id"]] = (rule["name"], rule["description"])
+
+        for sub in entry.get("selections", []):
+            extract_rules(sub)
+
     for unit in units:
-        # try:
-        rules = unit['rules']
-
-        for selection in unit['selections']:
-            try:
-                rules.extend(selection['rules'])
-            except KeyError:
-                continue
-
-        for rule in rules:
-            output[rule['id']] = (rule['name'], rule['description'])
-        # except KeyError:
-        #     continue
+        extract_rules(unit)
     
     return output
 
