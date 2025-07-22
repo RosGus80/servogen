@@ -3,7 +3,7 @@
 def main():
     import argparse
     import os
-    from src.parse import render_html
+    from servogen.parse import render_html
 
     parser = argparse.ArgumentParser(
         prog='servogen',

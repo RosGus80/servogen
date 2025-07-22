@@ -1,5 +1,5 @@
 from jinja2 import Environment, FileSystemLoader
-from src.service import json_load, bundle_css, find_units, find_rules, normalise_markup, find_faction_rule
+from servogen.service import json_load, bundle_css, find_units, find_rules, normalise_markup, find_faction_rule
 from importlib.resources import files
 
 
