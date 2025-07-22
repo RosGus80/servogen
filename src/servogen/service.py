@@ -1,7 +1,7 @@
 import json
 import re
 from collections import Counter
-from pprint import pprint
+import importlib.resources
 
 
 def json_load(path: str) -> dict:
@@ -33,16 +33,15 @@ def bundle_css(html_path: str, css_path: str) -> None:
     """Function that takes a css file that was previously linked by href and 
     explicitly puts it into the html file into <style> tag so that we can 
     double-click open it"""
+
+    css_content = importlib.resources.read_text('servogen', css_path)
     
     with open(html_path, "r", encoding="utf-8") as html_file:
         html = html_file.read()
 
-    with open(css_path, "r", encoding="utf-8") as css_file:
-        css = css_file.read()
-
     html = re.sub(
         r'<link\s+rel="stylesheet"\s+href="[^"]*"\s*/?>',
-        f"<style>\n{css}\n</style>",
+        f"<style>\n{css_content}\n</style>",
         html,
         count=1
     )
