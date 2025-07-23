@@ -194,9 +194,6 @@ def find_units(json_roster: dict) -> list:
 
     sort_units_fields(output)
 
-    with open('a.json', 'w') as file:
-        file.write(json.dumps(output))     
-
     return output
 
 
