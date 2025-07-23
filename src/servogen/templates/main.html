@@ -7,8 +7,11 @@
 </head>
 
 <body>
-
     <script>
+        const onScrollUp =() => {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
         const onIdClick = (id) => {
             const targetDiv = document.getElementById(id);
             const yOffset = -10;
@@ -17,10 +20,17 @@
                 const newY = targetDiv.getBoundingClientRect().top + window.scrollY + yOffset;
                 window.scrollTo({top: newY, behavior: 'smooth'});
 
-                // TODO: Add a color highlighting effect
+                targetDiv.classList.remove('highlight-flash');
+                void targetDiv.offsetWidth;
+                targetDiv.classList.add('highlight-flash');
             }
         }
     </script>
+
+
+    <a href="#army-info" class="scroll-up">
+        <h1 class="large-text">↑</h1>
+    </a>
 
 
     <header>
@@ -37,7 +47,7 @@
 
     <main>
 
-        <div class="army-info-div">
+        <div id="army-info" class="army-info-div">
             <h1 class="faction-name">{{ faction_name }}</h1>
 
             <div class="army-rule-div">

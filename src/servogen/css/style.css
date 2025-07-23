@@ -7,6 +7,11 @@
     font-family: sans-serif;
 }
 
+a {
+    text-decoration: none;
+    scroll-behavior: smooth;
+}
+
 :root {
     --color-primary: #649699;
     --color-dark: #193341;
@@ -15,6 +20,22 @@
     --color-teritary: #e0e0e0;
     --color-contrast: #c75040;
     --color-text: black;
+}
+
+.scroll-up {
+    position: fixed;
+    top: 5%;
+    left: 2.5%;
+
+    width: max(2.5vw, 2.5vh);
+    height: max(2.5vw, 2.5vh);
+
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 header {
@@ -157,7 +178,9 @@ footer {
     display: flex;
     flex-direction: column;
 
-    padding-block: 2%;
+    padding-block-start: 2%;
+    padding-block-end: 1%;
+    padding-inline: 1%;
 }
 
 .rule-div > :nth-child(1) {
@@ -237,6 +260,28 @@ footer {
 }
 
 .unit-meta {
-    margin-block: 1.25%;
+    margin-block: 1%;
+}
+
+.unit-meta > * {
+    margin-block: 1%;
     padding-inline: 2%;
+}
+
+/* Highlighting for hyperlinking */
+
+@keyframes highlight {
+    0% {
+        box-shadow: 0 0 0px var(--color-primary);
+    }
+    50% {
+        box-shadow: 0 0 15px 5px var(--color-primary);
+    }
+    100% {
+        box-shadow: 0 0 0px var(--color-primary);
+    }
+}
+
+.highlight-flash {
+    animation: highlight 2s ease-in-out;
 }
