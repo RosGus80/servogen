@@ -275,7 +275,7 @@ footer {
         box-shadow: 0 0 0px var(--color-primary);
     }
     50% {
-        box-shadow: 0 0 15px 5px var(--color-primary);
+        box-shadow: 0 0 20px 7.5px var(--color-primary);
     }
     100% {
         box-shadow: 0 0 0px var(--color-primary);

@@ -1,6 +1,6 @@
 # Servogen - template generator for new recruit rosters
 
-A work-in-progress **CLI tool** that transforms your **[NewRecruit.eu](https://newrecruit.eu)** rosters from raw json into clean, styled, and navigable **HTML** files — perfect for printing, sharing, or referencing during gameplay.
+A **CLI tool** that transforms your **[NewRecruit.eu](https://newrecruit.eu)** rosters from raw json into clean, styled, and navigable **HTML** files — perfect for printing, sharing, or referencing during gameplay.
 
 > ⚠️ This tool is currently in testing phase. If you face any issues, please copy the error message and contact me (preferably by opening an issue thread on Github), sharing your json file that caused the error
 
