@@ -1,4 +1,5 @@
 import json
+from pprint import pprint
 import re
 from collections import Counter
 import importlib.resources
@@ -217,21 +218,22 @@ def find_rules(units: list[dict]) -> dict[str, tuple[str, str]]:
     return output
 
 
-def find_profiles(units: list[dict]) -> list[dict]:
+def find_profiles(unit: dict) -> list[dict]:
     output: list[dict] = []
 
-    for unit in units: 
-        if unit['type'] == 'model':
-            model_profile: dict = unit['profiles'][0]['characteristics']
-            output.append(model_profile)
-        elif unit['type'] == 'unit':
-            for selection in unit['selections']:
-                if 'profiles' in selection.keys():
-                    output.append(selection['profiles'])
-                elif 'profiles' in unit.keys():
-                    for profile in unit['profiles']:
-                        if profile['name'] == unit['name']:
-                            output.append(profile)
+    if unit['type'] == 'model':
+        model_profile: dict = unit['profiles'][0]
+        output.append(model_profile)
+    elif unit['type'] == 'unit':
+        for selection in unit['selections']:
+            if 'profiles' in selection.keys():
+                for profile in unit['profiles']:
+                    if profile['name'] == unit['name']:
+                        output.append(profile)
+            elif 'profiles' in unit.keys():
+                for profile in unit['profiles']:
+                    if profile['name'] == unit['name']:
+                        output.append(profile)
 
     # Combining same positions into one
     merged = []
@@ -240,9 +242,20 @@ def find_profiles(units: list[dict]) -> list[dict]:
         name = profile.get("name")
         chars = profile.get("characteristics", [])
 
-        def compare_chars(char1: dict, char2: dict) -> bool:
+        def compare_chars(char1: list, char2: list) -> bool:
+            
+            def find_char_line(char_list: list, name: str) -> dict:
+                for line in char_list:
+                    if line['name'] == name:
+                        return line
+                return {}
+            
             for name in ('M', 'T', 'SV', 'W', 'LD', 'OC'):
-                if char1[name] != char2[name]: return False
+                char1_line = find_char_line(char1, name)
+                char2_line = find_char_line(char2, name)
+
+                if char1_line.get('$text', '-100') != char2_line.get('$text', '-101'):
+                    return False
             return True
 
         found = False

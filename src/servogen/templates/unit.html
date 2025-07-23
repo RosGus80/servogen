@@ -68,7 +68,7 @@
                     <td>{{ profile['name'] }}</td>
 
                     {% for char in profile['characteristics'] %}
-                        <td>char['$text']</td>
+                        <td>{{ char['$text'] }}</td>
                     {% endfor %}
                 </tr>
             {% endfor %}
