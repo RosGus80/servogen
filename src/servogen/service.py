@@ -98,11 +98,28 @@ def find_faction_rule(roster: dict) -> tuple[str, str]:
     return most_common
 
 
+def find_keywords(weapon: dict, profile: dict) -> list[tuple[str, dict]]:
+    weapon_rules = weapon.get('rules', [])
+
+    if len(weapon_rules) < 1:
+        return []
+
+    keywrods_char: dict = profile['characteristics'][-1]
+
+    output: list = []
+    
+    for rule in weapon_rules:
+        for keyword in keywrods_char['$text'].split(','):
+            if rule['name'].lower() in keyword.lower():
+                output.append((keyword, rule))
+                break
+    
+    return output
 
 
 def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
     """
-    CAREFUL: doesnt return full weapon object, only its profile
+    CAREFUL: doesnt return full weapon object, only its profile + rules
     """
     output = []
 
@@ -120,6 +137,7 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
                     if (profile['typeName'] == 'Ranged Weapons' and ranged
                     or profile['typeName'] == 'Melee Weapons' and not ranged):
                         profile['number'] = weapon['number']
+                        profile['rules'] = find_keywords(weapon, profile)
                         output.append(profile)
 
     elif unit['type'] == 'model':
@@ -139,6 +157,7 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
                 if (profile['typeName'] == 'Ranged Weapons' and ranged
                     or profile['typeName'] == 'Melee Weapons' and not ranged):
                     profile['number'] = weapon['number']
+                    profile['rules'] = find_keywords(weapon, profile)
                     output.append(profile)
 
     # Combining same positions into one with a bigger number
@@ -161,7 +180,6 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
 
         if not found:
             merged.append(weapon.copy())
-
     
     return merged
 
@@ -234,16 +252,6 @@ def find_profiles(unit: dict, is_recursion=False) -> list[dict]:
         for profile in unit.get('profiles', []):
             if profile.get('typeName') == 'Unit':
                 output.append(profile)
-    # elif unit['type'] == 'unit':
-    #     for selection in unit['selections']:
-    #         if 'profiles' in selection.keys():
-    #             for profile in selection['profiles']:
-    #                 if profile['typeName'] == 'Unit':
-    #                     output.append(profile)
-    #         elif 'profiles' in unit.keys():
-    #             for profile in unit['profiles']:
-    #                 if profile['typeName'] == 'Unit':
-    #                     output.append(profile)
 
     # Combining same positions into one
     merged = []

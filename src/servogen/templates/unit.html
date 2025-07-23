@@ -97,7 +97,16 @@
                     {% endif %}
 
                     {% for char in profile['characteristics'] %}
-                        <td>{{ char['$text'] }}</td>
+                        {% if char['name'] != 'Keywords' %}
+                            <td>{{ char['$text'] }}</td>
+                        {% else %}
+                            <td>
+                                {% for keyword in profile['rules'] %}
+                                    <span onclick="onIdClick('{{ keyword[1]['id'] }}')">{{ keyword[0] }}</span> {% if not loop.last %}, {% endif %}
+                                {% endfor %}
+
+                            </td>
+                        {% endif %}
                     {% endfor %}
                 </tr>
                 {% endfor %}
@@ -127,7 +136,15 @@
                     {% endif %}
 
                     {% for char in profile['characteristics'] %}
-                        <td>{{ char['$text'] }}</td>
+                        {% if char['name'] != 'Keywords' %}
+                            <td>{{ char['$text'] }}</td>
+                        {% else %}
+                            <td>
+                                {% for keyword in profile['rules'] %}
+                                    <span onclick="onIdClick('{{ keyword[1]['id'] }}')">{{ keyword[0] }}</span> {% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endif %}
                     {% endfor %}
                 </tr>
                 {% endfor %}
@@ -173,7 +190,7 @@
         <div class="unit-meta">
             <h1 class="medium-text"><strong>Rules:</strong>
                 {% for rule in unit.get('rules', []) %}
-                    {{ rule['name'] }}{% if not loop.last %}, {% endif %}
+                    <span onclick="onIdClick('{{ rule['id'] }}')">{{ rule['name'] }}{% if not loop.last %}, {% endif %}</span>
                 {% endfor %}
             </h1>
 
