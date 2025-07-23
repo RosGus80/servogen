@@ -2,7 +2,8 @@
 __pycache__
 .idea
 /outputs
-/test/*.json
+/test/json
+/test/outputs
 .log
 *.egg-info
 .DS_Store
