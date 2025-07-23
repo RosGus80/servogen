@@ -218,22 +218,32 @@ def find_rules(units: list[dict]) -> dict[str, tuple[str, str]]:
     return output
 
 
-def find_profiles(unit: dict) -> list[dict]:
+def find_profiles(unit: dict, is_recursion=False) -> list[dict]:
     output: list[dict] = []
 
-    if unit['type'] == 'model':
-        model_profile: dict = unit['profiles'][0]
-        output.append(model_profile)
-    elif unit['type'] == 'unit':
-        for selection in unit['selections']:
-            if 'profiles' in selection.keys():
-                for profile in unit['profiles']:
-                    if profile['name'] == unit['name']:
-                        output.append(profile)
-            elif 'profiles' in unit.keys():
-                for profile in unit['profiles']:
-                    if profile['name'] == unit['name']:
-                        output.append(profile)
+    if unit['type'] == 'model' and not is_recursion:
+        for profile in unit['profiles']:
+            if profile['typeName'] == 'Unit':
+                output.append(profile)
+    elif is_recursion or unit['type'] == 'unit':
+        # Recurse first through all selections
+        for selection in unit.get('selections', []):
+            output.extend(find_profiles(selection, is_recursion=True))
+        
+        # After recursion, collect any direct profiles at this level
+        for profile in unit.get('profiles', []):
+            if profile.get('typeName') == 'Unit':
+                output.append(profile)
+    # elif unit['type'] == 'unit':
+    #     for selection in unit['selections']:
+    #         if 'profiles' in selection.keys():
+    #             for profile in selection['profiles']:
+    #                 if profile['typeName'] == 'Unit':
+    #                     output.append(profile)
+    #         elif 'profiles' in unit.keys():
+    #             for profile in unit['profiles']:
+    #                 if profile['typeName'] == 'Unit':
+    #                     output.append(profile)
 
     # Combining same positions into one
     merged = []
@@ -243,7 +253,7 @@ def find_profiles(unit: dict) -> list[dict]:
         chars = profile.get("characteristics", [])
 
         def compare_chars(char1: list, char2: list) -> bool:
-            
+
             def find_char_line(char_list: list, name: str) -> dict:
                 for line in char_list:
                     if line['name'] == name:
@@ -270,5 +280,4 @@ def find_profiles(unit: dict) -> list[dict]:
         if not found:
             merged.append(profile.copy())
 
-    print('profiles found')
     return merged

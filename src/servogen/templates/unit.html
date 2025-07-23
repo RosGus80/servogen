@@ -37,7 +37,7 @@
                 {% for selection in unit['selections'] %}
 
                     <tr>
-                        <td>{{ selection['number'] }} {{ selection['name'] }}</td>
+                        <td>{{ selection['number'] }} x {{ selection['name'] }}</td>
                         <td>
                             {% for selec in selection['selections'] %}
                                 {% if selec['number'] > 1 %}{{ selec['number'] }} x {% endif %}{{ selec['name'] }}{% if not loop.last %}, {% endif %}
