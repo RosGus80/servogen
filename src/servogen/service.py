@@ -177,11 +177,15 @@ def find_units(json_roster: dict) -> list:
             continue
 
     for unit in output:
+        # Adding custom fields
         unit_ranged_weapons: list = find_unit_weapons(unit, True)
         unit_melee_weapons: list = find_unit_weapons(unit, False)
 
         unit['ranged_choices'] = unit_ranged_weapons
         unit['melee_choices'] = unit_melee_weapons
+
+        unit_profiles: list = find_profiles(unit)
+        unit['char_profiles'] = unit_profiles
     
         # Get extra abilities for separate tables
         ignored_types = {"Unit", "Melee Weapons", "Ranged Weapons"}
@@ -213,3 +217,45 @@ def find_rules(units: list[dict]) -> dict[str, tuple[str, str]]:
     return output
 
 
+def find_profiles(units: list[dict]) -> list[dict]:
+    output: list[dict] = []
+
+    for unit in units: 
+        if unit['type'] == 'model':
+            model_profile: dict = unit['profiles'][0]['characteristics']
+            output.append(model_profile)
+        elif unit['type'] == 'unit':
+            for selection in unit['selections']:
+                if 'profiles' in selection.keys():
+                    output.append(selection['profiles'])
+                elif 'profiles' in unit.keys():
+                    for profile in unit['profiles']:
+                        if profile['name'] == unit['name']:
+                            output.append(profile)
+
+    # Combining same positions into one
+    merged = []
+
+    for profile in output:
+        name = profile.get("name")
+        chars = profile.get("characteristics", [])
+
+        def compare_chars(char1: dict, char2: dict) -> bool:
+            for name in ('M', 'T', 'SV', 'W', 'LD', 'OC'):
+                if char1[name] != char2[name]: return False
+            return True
+
+        found = False
+        for existing in merged:
+            if (
+                existing.get("name") == name and
+                compare_chars(existing.get("characteristics"), chars)
+            ):
+                found = True
+                break
+
+        if not found:
+            merged.append(profile.copy())
+
+    print('profiles found')
+    return merged

@@ -63,43 +63,15 @@
                 <th>OC</th>
             </tr>
 
-            <!-- Treat one-model units and non-one-model units differently -->
-            {% if unit['type'] == 'model' %}
+            {% for profile in unit['char_profiles'] %}
                 <tr>
-                    <td>{{ unit['name'] }}</td>
+                    <td>{{ profile['name'] }}</td>
 
-                    {% for char in unit['profiles'][0]['characteristics'] %}
-                        <td>{{ char['$text'] }}</td>
+                    {% for char in profile['characteristics'] %}
+                        <td>char['$text']</td>
                     {% endfor %}
                 </tr>
-            {% elif unit['type'] == 'unit' %}
-                {% for selection in unit['selections'] %}
-                    {% if 'profiles' in selection.keys() %}
-
-                        <tr>
-                            <td>{{ selection['name'] }}</td>
-                            {% for char in selection['profiles'][0]['characteristics'] %}
-                                <td>{{ char['$text'] }}</td>
-                            {% endfor %}
-                        </tr>
-
-                    {% elif 'profiles' in unit.keys() %}
-                        {% for profile in unit['profiles'] if profile['name'] == unit['name'] %}
-                            <tr>
-                                <td>{{ profile['name'] }}</td>
-
-                                {% for char in profile['characteristics'] %}
-                                    <td>{{ char['$text'] }}</td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                    {% else %}
-
-                        <h1>Weird, send me a json, ill look it up</h1>
-
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
+            {% endfor %}
         </table>
 
         <!-- Table of ranged weapons -->
