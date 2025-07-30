@@ -56,7 +56,7 @@
             <tr>
                 <th>Unit</th>
 
-                {% for char in profile['characteristics'] %}
+                {% for char in unit['char_profiles'][0]['characteristics'] %}
                     <th>{{ char['name'] }}</th>
                 {% endfor %}
 
