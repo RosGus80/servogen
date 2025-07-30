@@ -7,7 +7,7 @@ A **CLI tool** that transforms your **[NewRecruit.eu](https://newrecruit.eu)** r
 ## Features
 
 * Converts NewRecruit `.json` files into static HTML  
-* Currently only tested on WH40k rosters
+* Currently is only tested on WH40k rosters, may display nonsense or cause errors on rosters from other games
 * Highlights your force rules, selected units rules, adds hyperlinking to comfortly navigate through your list. Overall, does new recruit pretty output but better
 * No server required — just open the HTML file in your browser  
 * Powered by **[Jinja2](https://jinja.palletsprojects.com/)**
