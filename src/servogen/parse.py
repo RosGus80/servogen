@@ -33,7 +33,6 @@ def find_detachment(roster) -> dict:
 def render_html(input_json_path: str, output_path: str, collapse: bool = False):
     roster: dict = json_load(input_json_path)['roster']
 
-    template_dir = files("servogen.templates")
     env = Environment(
         loader=PackageLoader('servogen', 'templates'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -46,8 +45,16 @@ def render_html(input_json_path: str, output_path: str, collapse: bool = False):
     nr_link: str = roster['generatedBy']
     roster_name: str = roster['name']
     cost_string: str = roster['costs'][0]['name']
-    cost_value: int = roster['costs'][0]['value']
-    cost_limit: int = roster['costLimits'][0]['value']
+
+    try:
+        cost_value: int | str = roster['costs'][0]['value']
+    except KeyError: 
+        cost_value: int | str = '-'
+
+    try:
+        cost_limit: int | str = roster['costLimits'][0]['value']
+    except KeyError: 
+        cost_limit: int | str = '-'
 
     faction_name: str = roster['forces'][0]['catalogueName']
     faction_rule_name, faction_rule_description = find_faction_rule(roster)
