@@ -55,12 +55,17 @@
         <table>
             <tr>
                 <th>Unit</th>
-                <th>M</th>
+
+                {% for char in profile['characteristics'] %}
+                    <th>{{ char['name'] }}</th>
+                {% endfor %}
+
+                <!-- <th>M</th>
                 <th>T</th>
                 <th>SV</th>
                 <th>W</th>
                 <th>LD</th>
-                <th>OC</th>
+                <th>OC</th> -->
             </tr>
 
             {% for profile in unit['char_profiles'] %}
