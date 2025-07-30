@@ -7,6 +7,7 @@ A **CLI tool** that transforms your **[NewRecruit.eu](https://newrecruit.eu)** r
 ## Features
 
 * Converts NewRecruit `.json` files into static HTML  
+* Currently only tested on WH40k rosters
 * Highlights your force rules, selected units rules, adds hyperlinking to comfortly navigate through your list. Overall, does new recruit pretty output but better
 * No server required — just open the HTML file in your browser  
 * Powered by **[Jinja2](https://jinja.palletsprojects.com/)**
@@ -26,7 +27,6 @@ It seems like when you open the file on IPhone file preview, the JS isnt working
 
 ## Planned Features
 
-* Export to **print-ready PDF**  
 * Interactive HTML (collapse/expand, custom filtering, mark models as dead)  
 * Roster statistics and tactical summaries  
 * Customisable color themes
