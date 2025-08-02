@@ -136,7 +136,10 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
                 for profile in weapon['profiles']:
                     if (profile['typeName'] == 'Ranged Weapons' and ranged
                     or profile['typeName'] == 'Melee Weapons' and not ranged):
-                        profile['number'] = weapon['number']
+                        if 'number' in weapon.keys():
+                            profile['number'] = weapon['number']
+                        else:
+                            profile['number'] = 1
                         profile['rules'] = find_keywords(weapon, profile)
                         output.append(profile)
 
@@ -156,7 +159,10 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
             for profile in weapon['profiles']:
                 if (profile['typeName'] == 'Ranged Weapons' and ranged
                     or profile['typeName'] == 'Melee Weapons' and not ranged):
-                    profile['number'] = weapon['number']
+                    if 'number' in weapon.keys():
+                        profile['number'] = weapon['number']
+                    else:
+                        profile['number'] = 1
                     profile['rules'] = find_keywords(weapon, profile)
                     output.append(profile)
 

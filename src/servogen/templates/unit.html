@@ -27,7 +27,11 @@
                     <td>{{ unit['name'] }}</td>
                     <td>
                         {% for selection in unit['selections'] %}
-                            {% if selection['number'] > 1 %}{{ selection['number'] }} x {% endif %}{{ selection['name'] }}{% if not loop.last %}, {% endif %}
+                            {% if 'number' in selection.keys() %}
+                                {% if selection['number'] > 1 %}{{ selection['number'] }} x {% endif %}{{ selection['name'] }}{% if not loop.last %}, {% endif %}
+                            {% else %}
+                                1 x {{ selection['name'] }}{% if not loop.last %}, {% endif %}
+                            {% endif %}
                         {% endfor %}
                     </td>
                 </tr>
@@ -40,7 +44,11 @@
                         <td>{{ selection['number'] }} x {{ selection['name'] }}</td>
                         <td>
                             {% for selec in selection['selections'] %}
-                                {% if selec['number'] > 1 %}{{ selec['number'] }} x {% endif %}{{ selec['name'] }}{% if not loop.last %}, {% endif %}
+                                {% if 'number' in selec.keys() %}
+                                    {% if selec['number'] > 1 %}{{ selec['number'] }} x {% endif %}{{ selec['name'] }}{% if not loop.last %}, {% endif %}
+                                {% else %}
+                                    1 x {{ selec['name'] }}{% if not loop.last %}, {% endif %}
+                                {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
