@@ -30,7 +30,7 @@ def find_detachment(roster) -> dict:
     return {}
 
 
-def render_html(input_json_path: str, output_path: str, collapse: bool = False):
+def render_html(input_json_path: str, output_path: str, collapse: bool = False, dark: bool = False):
     roster: dict = json_load(input_json_path)['roster']
 
     env = Environment(
@@ -105,4 +105,5 @@ def render_html(input_json_path: str, output_path: str, collapse: bool = False):
         normalised_content: str = normalise_markup(content)
         file.write(normalised_content)
 
-    bundle_css(output_path, 'css/style.css')
+    theme_css = 'css/dark.css' if dark else 'css/light.css'
+    bundle_css(output_path, 'css/style.css', theme_css)

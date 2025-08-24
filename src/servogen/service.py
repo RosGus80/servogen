@@ -30,23 +30,31 @@ def normalise_markup(html: str) -> str:
     
     return text
 
-def bundle_css(html_path: str, css_path: str) -> None:
+def bundle_css(html_path: str, base_css: str, theme_css: str) -> None:
     """Function that takes a css file that was previously linked by href and 
     explicitly puts it into the html file into <style> tag so that we can 
     double-click open it"""
 
-    css_content = importlib.resources.read_text('servogen', css_path)
+    # Read base CSS
+    base_css_content = importlib.resources.read_text('servogen', base_css)
     
+    theme_css_content = ''
+    if theme_css != '':
+        theme_css_content = importlib.resources.read_text('servogen', theme_css)
+
+    combined_css = f"<style>\n{base_css_content}\n{theme_css_content}\n</style>"
+
     with open(html_path, "r", encoding="utf-8") as html_file:
         html = html_file.read()
 
     html = re.sub(
         r'<link\s+rel="stylesheet"\s+href="[^"]*"\s*/?>',
-        f"<style>\n{css_content}\n</style>",
+        combined_css,
         html,
         count=1
     )
 
+    # Write back the modified HTML
     with open(html_path, "w", encoding="utf-8") as html_file:
         html_file.write(html)
 
@@ -147,24 +155,37 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
         # Just take model's weapons
         selections = unit.get('selections', [])
         for weapon in selections:
+            nested_weapons = []
             if ('profiles' not in weapon.keys() 
                 or 'weapon' not in weapon['profiles'][0]['typeName'].lower()):
                 
-                #  Fragile workaround! If facing problems, rewrite
+                # If a 'weapon' is several weapons (e.g. 'Dreadnought Combat Weapon w/ Storm Bolter')
                 if 'selections' in weapon.keys():
-                    weapon = weapon['selections'][0]
+                    nested_weapons = weapon['selections']
                 else:
                     continue
             
-            for profile in weapon['profiles']:
-                if (profile['typeName'] == 'Ranged Weapons' and ranged
-                    or profile['typeName'] == 'Melee Weapons' and not ranged):
-                    if 'number' in weapon.keys():
-                        profile['number'] = weapon['number']
-                    else:
-                        profile['number'] = 1
-                    profile['rules'] = find_keywords(weapon, profile)
-                    output.append(profile)
+            if len(nested_weapons) > 0:
+                for weapon_i in nested_weapons:
+                    for profile in weapon_i['profiles']:
+                        if (profile['typeName'] == 'Ranged Weapons' and ranged
+                            or profile['typeName'] == 'Melee Weapons' and not ranged):
+                            if 'number' in weapon.keys():
+                                profile['number'] = weapon['number']
+                            else:
+                                profile['number'] = 1
+                            profile['rules'] = find_keywords(weapon, profile)
+                            output.append(profile)
+            else:
+                for profile in weapon['profiles']:
+                    if (profile['typeName'] == 'Ranged Weapons' and ranged
+                        or profile['typeName'] == 'Melee Weapons' and not ranged):
+                        if 'number' in weapon.keys():
+                            profile['number'] = weapon['number']
+                        else:
+                            profile['number'] = 1
+                        profile['rules'] = find_keywords(weapon, profile)
+                        output.append(profile)
 
     # Combining same positions into one with a bigger number
     merged = []

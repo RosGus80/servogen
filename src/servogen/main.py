@@ -12,7 +12,7 @@ def main():
                     'Use -r flag to specify input JSON file. Use -o to specify output HTML file. '
                     'If no -o is provided, output will be saved next to input file with .html extension. '
                     'Use -c to enable collapsible sections.',
-        usage='servogen -r roster.json [-o output.html] [--collapsible]'
+        usage='servogen -r roster.json [-o output.html] [--collapsible] [--dark]'
     )
 
     parser.add_argument(
@@ -34,6 +34,12 @@ def main():
         help='Enable collapsible sections for unit rules and abilities.'
     )
 
+    # parser.add_argument(
+    #     '-d', '--dark',
+    #     action='store_true',
+    #     help='Switches to dark theme',
+    # )
+
     args = parser.parse_args()
 
     input_path = args.render
@@ -44,7 +50,7 @@ def main():
         input_basename = os.path.splitext(os.path.basename(input_path))[0]
         output_path = os.path.join(input_dir, input_basename + ".html")
 
-    render_html(input_path, output_path, collapse=args.collapsible)
+    render_html(input_path, output_path, collapse=args.collapsible, dark=False)
 
 
 if __name__ == '__main__':
