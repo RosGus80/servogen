@@ -4,6 +4,7 @@ def main():
     import argparse
     import os
     from servogen.parse import render_html
+    from servogen.service import add_css
 
     parser = argparse.ArgumentParser(
         prog='servogen',
@@ -34,6 +35,12 @@ def main():
         help='Enable collapsible sections for unit rules and abilities.'
     )
 
+    parser.add_argument(
+        '-t', '--theme',
+        metavar='THEME',
+        help='Path to a theme file'
+    )
+
     # parser.add_argument(
     #     '-d', '--dark',
     #     action='store_true',
@@ -41,6 +48,8 @@ def main():
     # )
 
     args = parser.parse_args()
+
+    add_css('', '', '', '', '', '', '', '')
 
     input_path = args.render
     if args.output:
@@ -50,7 +59,7 @@ def main():
         input_basename = os.path.splitext(os.path.basename(input_path))[0]
         output_path = os.path.join(input_dir, input_basename + ".html")
 
-    render_html(input_path, output_path, collapse=args.collapsible, dark=False)
+    render_html(input_path, output_path, collapse=args.collapsible, theme='some')
 
 
 if __name__ == '__main__':

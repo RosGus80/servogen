@@ -1,6 +1,9 @@
 from jinja2 import Environment, PackageLoader, select_autoescape
 from servogen.service import json_load, bundle_css, find_units, find_rules, normalise_markup, find_faction_rule
 from importlib.resources import files
+from appdirs import user_data_dir
+import os
+from pathlib import Path
 
 
 # All the env vars for template
@@ -30,7 +33,7 @@ def find_detachment(roster) -> dict:
     return {}
 
 
-def render_html(input_json_path: str, output_path: str, collapse: bool = False, dark: bool = False):
+def render_html(input_json_path: str, output_path: str, collapse: bool = False, theme: str | None = None):
     roster: dict = json_load(input_json_path)['roster']
 
     env = Environment(
@@ -105,5 +108,21 @@ def render_html(input_json_path: str, output_path: str, collapse: bool = False, 
         normalised_content: str = normalise_markup(content)
         file.write(normalised_content)
 
-    theme_css = 'css/dark.css' if dark else 'css/light.css'
-    bundle_css(output_path, 'css/style.css', theme_css)
+    if theme is not None:
+        ud_dir = Path(user_data_dir('servogen'))
+        ud_dir.mkdir(parents=True, exist_ok=True)
+
+        css_dir = Path(os.path.join(user_data_dir('servogen'), 'css'))
+        css_dir.mkdir(parents=True, exist_ok=True)
+
+    theme_css = 'css/light.css' if theme is None else os.path.join(user_data_dir('servogen'), 'css', f'{theme}.css')
+
+    if os.path.exists(theme_css):
+        bundle_css(output_path, 'css/style.css', theme_css)
+    elif theme is None:
+        print('Base theme file is not found. Please, reinstall the package')
+    else:
+        print(f'Theme file {theme} doesnt exist. Available themes:')
+
+        for theme in os.listdir(os.path.join(user_data_dir('servogen'), 'css')):
+            print(theme.split('.')[0])

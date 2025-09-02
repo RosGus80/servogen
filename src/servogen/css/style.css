@@ -12,6 +12,10 @@ a {
     scroll-behavior: smooth;
 }
 
+html {
+    background-color: var(--color-background);
+}
+
 .scroll-up {
     position: fixed;
     top: 5%;

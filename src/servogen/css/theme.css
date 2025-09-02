@@ -1,0 +1,10 @@
+:root {
+    --color-background: {{ bg-color }};
+    --color-primary: {{ primary-color }};
+    --color-dark: {{ dark-color }};
+    --color-light: {{ light-color }};
+    --color-secondary: {{ secondary-color }};
+    --color-teritary: {{ teritary-color }};
+    --color-contrast: {{ contrast-color }};
+    --color-text: {{ text-color }};
+}

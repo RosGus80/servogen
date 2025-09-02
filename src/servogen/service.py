@@ -1,5 +1,5 @@
 import json
-from pprint import pprint
+from appdirs import user_data_dir
 import re
 from collections import Counter
 import importlib.resources
@@ -316,3 +316,11 @@ def find_profiles(unit: dict, is_recursion=False) -> list[dict]:
             merged.append(profile.copy())
 
     return merged
+
+
+def add_css(bg: str, primary: str, secondary: str, teritary: str, dark: str, light: str, contrast: str, text: str) -> None:
+    """ 
+    Writes a new css file for user-defined theme based on a template and input vars
+    """
+
+    print(user_data_dir('servogen'))
