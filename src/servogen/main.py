@@ -4,7 +4,7 @@ def main():
     import argparse
     import os
     from servogen.parse import render_html
-    from servogen.service import add_css
+    from servogen.service import add_css, parse_theme
 
     parser = argparse.ArgumentParser(
         prog='servogen',
@@ -19,7 +19,6 @@ def main():
     parser.add_argument(
         '-r', '--render',
         metavar='INPUT',
-        required=True,
         help='Path to the New Recruit JSON file to render into HTML.'
     )
 
@@ -41,6 +40,13 @@ def main():
         help='Path to a theme file'
     )
 
+    parser.add_argument(
+        '-at', '--add-theme', 
+        nargs='+',
+        type=str,
+        help='Add a theme, e.g. --add-theme primary:#ffffff'
+    )
+
     # parser.add_argument(
     #     '-d', '--dark',
     #     action='store_true',
@@ -48,6 +54,15 @@ def main():
     # )
 
     args = parser.parse_args()
+
+    if args.add_theme: 
+        theme = parse_theme(args.add_theme)
+        
+        if 'name' not in theme.keys():
+            raise ValueError('You have to provide a theme name (example: name:new)')
+
+        add_css(theme['name'], theme.get('background', '#ffffff'), theme.get('primary', '#649699'), theme.get('secondary', '#2a856a'), theme.get('teritary', '#e0e0e0'), theme.get('dark', '#193341'), theme.get('light', '#efefef'), theme.get('contrast', '#c75040'), theme.get('text', '#000000'))
+        return None
 
     input_path = args.render
     if args.output:
@@ -60,6 +75,6 @@ def main():
     theme_name: str | None = None if args.theme is None else args.theme
     render_html(input_path, output_path, collapse=args.collapsible, theme=theme_name)
 
-
+ 
 if __name__ == '__main__':
     main()

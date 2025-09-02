@@ -1,8 +1,12 @@
+import os
 import json
-from appdirs import user_data_dir
 import re
+from pathlib import Path
+from appdirs import user_data_dir
 from collections import Counter
 import importlib.resources
+from jinja2 import Environment, PackageLoader
+from argparse import ArgumentTypeError
 
 
 def json_load(path: str) -> dict:
@@ -318,9 +322,47 @@ def find_profiles(unit: dict, is_recursion=False) -> list[dict]:
     return merged
 
 
-def add_css(bg: str, primary: str, secondary: str, teritary: str, dark: str, light: str, contrast: str, text: str) -> None:
+def parse_theme(pairs) -> dict:
+    theme = {}
+
+    for pair in pairs:
+        if (':' not in pair):
+            raise ArgumentTypeError(f'Invalid format: {pair}. Use "name:#value"')
+        
+        name, color = pair.split(':', 1)
+        theme[name.strip()] = color.strip()
+
+    return theme
+
+
+def add_css(file_name: str, bg: str ='#ffffff', primary: str ='#649699', secondary: str ='#2a856a', teritary: str ='#e0e0e0', dark: str ='#193341', light: str ='#efefef', contrast: str ='#c75040', text: str ='#000000') -> None:
     """ 
     Writes a new css file for user-defined theme based on a template and input vars
     """
 
-    print(user_data_dir('servogen'))
+    css_dir = Path(os.path.join(user_data_dir('servogen'), 'css'))
+    css_dir.mkdir(parents=True, exist_ok=True)
+
+    env = Environment(
+        loader=PackageLoader('servogen', 'templates'),
+    )
+
+    template = env.get_template('theme.css')
+
+    content = template.render(
+        bg_color=bg,
+        primary_color=primary,
+        secondary_color=secondary,
+        teritary_color=teritary,
+        dark_color=dark,
+        light_color=light,
+        contrast_color=contrast,
+        text_color=text,
+    )
+
+    output_path = os.path.join(user_data_dir('servogen'), 'css', f'{file_name}.css')
+
+    with open(output_path, 'w') as file:
+        file.write(content)
+
+    print(f'{file_name} theme added')

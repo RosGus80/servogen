@@ -117,9 +117,6 @@ def render_html(input_json_path: str, output_path: str, collapse: bool = False, 
 
     theme_css = 'css/light.css' if theme is None else os.path.join(user_data_dir('servogen'), 'css', f'{theme}.css')
 
-    print(os.path.join(os.path.dirname(os.path.abspath(__file__)), theme_css))
-    
-
     if os.path.exists(os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), theme_css))):
         bundle_css(output_path, 'css/style.css', theme_css)
     elif theme is None:
