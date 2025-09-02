@@ -5,10 +5,8 @@
     line-height: 20px;
     
     font-family: sans-serif;
-}
 
-h1, h2, h3, h4, h5, h6 {
-    color: var(--color-text);
+    color: var(--color-text)
 }
 
 a {
