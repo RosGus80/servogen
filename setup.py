@@ -7,7 +7,8 @@ setup(
     packages=find_packages(where='src'),
     install_requires=[
         'Jinja2==3.1.6',
-        'setuptools==65.5.0'
+        'setuptools==65.5.0',
+        'appdirs==1.4.4',
     ],
     entry_points={'console_scripts': ['servogen=servogen.main:main']},
     package_dir={'': 'src'},
