@@ -5,7 +5,7 @@ from pathlib import Path
 from appdirs import user_data_dir
 from collections import Counter
 import importlib.resources
-from jinja2 import Environment, PackageLoader
+from jinja2 import Environment, FileSystemLoader
 from argparse import ArgumentTypeError
 
 
@@ -344,7 +344,7 @@ def add_css(file_name: str, bg: str ='#ffffff', primary: str ='#649699', seconda
     css_dir.mkdir(parents=True, exist_ok=True)
 
     env = Environment(
-        loader=PackageLoader('servogen', 'templates'),
+        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "templates"))
     )
 
     template = env.get_template('theme.css')
