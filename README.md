@@ -36,7 +36,8 @@ You can add your custom themes and use it in your rosters. To define a new custo
 * dark
 * light 
 * contrast
-* text
+* text 
+
 The names are verbose, but note that light and dark are actually interchangable - if you define a dark theme, "dark" color would be light. If you dont define some of the keys, the values would automatically be taken from the original light theme.
 To use your new theme, render the template like this: ```servogen -r path.json -t name``` - use your defined theme name. 
 Data of user created data is stored in your user data folder (e.g. on Mac Os it would be ...Application Support/servogen)
