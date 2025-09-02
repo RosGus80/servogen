@@ -49,8 +49,6 @@ def main():
 
     args = parser.parse_args()
 
-    add_css('', '', '', '', '', '', '', '')
-
     input_path = args.render
     if args.output:
         output_path = args.output
@@ -59,7 +57,8 @@ def main():
         input_basename = os.path.splitext(os.path.basename(input_path))[0]
         output_path = os.path.join(input_dir, input_basename + ".html")
 
-    render_html(input_path, output_path, collapse=args.collapsible, theme='some')
+    theme_name: str | None = None if args.theme is None else args.theme
+    render_html(input_path, output_path, collapse=args.collapsible, theme=theme_name)
 
 
 if __name__ == '__main__':
