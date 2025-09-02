@@ -13,7 +13,7 @@ setup(
     entry_points={'console_scripts': ['servogen=servogen.main:main']},
     package_dir={'': 'src'},
     package_data={
-        'servogen': ['templates/*.html', 'css/*.css']
+        'servogen': ['templates/*.html', 'templates/*.css', 'css/*.css']
     },
     include_package_data=True,
 )
