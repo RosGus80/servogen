@@ -337,8 +337,6 @@ def parse_theme(pairs) -> dict:
         name, color = pair.split(':', 1)
         theme[name.strip()] = color.strip()
 
-        print(theme)
-
     return theme
 
 
