@@ -266,6 +266,11 @@ def find_rules(units: list[dict]) -> dict[str, tuple[str, str]]:
     
     return output
 
+# TODO: When there are abilities in options (see my latest tau roster stealth 
+# battlesuits commander), it properly lists them in model options, but not 
+# in abilities, so when i get the abilities dictionary, we should iterate 
+# through all the model options, check for abilitites and add it as well
+
 
 def find_profiles(unit: dict, is_recursion=False) -> list[dict]:
     output: list[dict] = []
@@ -331,6 +336,8 @@ def parse_theme(pairs) -> dict:
         
         name, color = pair.split(':', 1)
         theme[name.strip()] = color.strip()
+
+        print(theme)
 
     return theme
 

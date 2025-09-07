@@ -37,21 +37,15 @@ def main():
     parser.add_argument(
         '-t', '--theme',
         metavar='THEME',
-        help='Path to a theme file'
+        help='Pass a theme name to use this theme in new render (servogen -r file.json -t dark)'
     )
 
     parser.add_argument(
         '-at', '--add-theme', 
         nargs='+',
         type=str,
-        help='Add a theme, e.g. --add-theme primary:#ffffff'
+        help='Add a theme, e.g. --add-theme name:light primary:#ffffff'
     )
-
-    # parser.add_argument(
-    #     '-d', '--dark',
-    #     action='store_true',
-    #     help='Switches to dark theme',
-    # )
 
     args = parser.parse_args()
 
