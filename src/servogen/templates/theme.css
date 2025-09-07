@@ -7,4 +7,5 @@
     --color-teritary: {{ teritary_color }};
     --color-contrast: {{ contrast_color }};
     --color-text: {{ text_color }};
+    --color-title: {{ title_color }};
 }

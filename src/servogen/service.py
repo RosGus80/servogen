@@ -342,7 +342,7 @@ def parse_theme(pairs) -> dict:
     return theme
 
 
-def add_css(file_name: str, bg: str ='#ffffff', primary: str ='#649699', secondary: str ='#2a856a', teritary: str ='#e0e0e0', dark: str ='#193341', light: str ='#efefef', contrast: str ='#c75040', text: str ='#000000') -> None:
+def add_css(file_name: str, bg: str ='#ffffff', primary: str ='#649699', secondary: str ='#2a856a', teritary: str ='#e0e0e0', dark: str ='#193341', light: str ='#efefef', contrast: str ='#c75040', text: str ='#000000', title: str = '') -> None:
     """ 
     Writes a new css file for user-defined theme based on a template and input vars
     """
@@ -365,6 +365,7 @@ def add_css(file_name: str, bg: str ='#ffffff', primary: str ='#649699', seconda
         light_color=light,
         contrast_color=contrast,
         text_color=text,
+        title_color=title,
     )
 
     output_path = os.path.join(user_data_dir('servogen'), 'css', f'{file_name}.css')

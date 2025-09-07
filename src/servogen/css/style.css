@@ -66,6 +66,10 @@ pre {
     gap: 5px;
 }
 
+.color-title {
+    color: var(--color-title) !important;
+}
+
 .header-text {
     color: var(--color-text);
     font-weight: 400;
