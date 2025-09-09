@@ -60,7 +60,10 @@ def main():
 
     input_path = args.render
     if args.output:
-        output_path = args.output
+        if args.output.count('.html') == 0:
+            output_path = f'{args.output}.html'
+        else:
+            output_path = args.output
     else:
         input_dir = os.path.dirname(input_path)
         input_basename = os.path.splitext(os.path.basename(input_path))[0]
