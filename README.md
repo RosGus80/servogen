@@ -32,7 +32,6 @@ You can add your custom themes and use it in your rosters. To define a new custo
 * background
 * primary
 * secondary
-* teritary 
 * dark
 * light 
 * contrast

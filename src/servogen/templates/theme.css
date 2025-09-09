@@ -4,7 +4,6 @@
     --color-dark: {{ dark_color }};
     --color-light: {{ light_color }};
     --color-secondary: {{ secondary_color }};
-    --color-teritary: {{ teritary_color }};
     --color-contrast: {{ contrast_color }};
     --color-text: {{ text_color }};
     --color-title: {{ title_color }};

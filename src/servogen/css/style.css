@@ -100,10 +100,6 @@ pre {
     color: var(--color-secondary);
 }
 
-.teritary-color {
-    color: var(--color-teritary);
-}
-
 .dark-color {
     color: var(--color-dark);
 }
@@ -153,13 +149,13 @@ table {
 }
 
 th, td {
-    border: 1px solid var(--color-teritary);
+    border: 1px solid var(--color-secondary);
     padding: 0.6rem 1rem;
     text-align: left;
 }
 
 th {
-    background-color: var(--color-teritary);
+    background-color: var(--color-secondary);
 }
 
 tr:nth-child(odd) {
@@ -203,7 +199,7 @@ footer {
     width: 100%;
 
     border-radius: 10px;
-    border: 1px solid var(--color-teritary);
+    border: 1px solid var(--color-secondary);
 
     overflow: hidden;
 }
@@ -242,7 +238,7 @@ footer {
 }
 
 .collapsible-table {
-    border: 1px solid var(--color-teritary);
+    border: 1px solid var(--color-secondary);
     padding: 10px;
 }
 
@@ -254,7 +250,7 @@ footer {
 
 .collapsible-table th,
 .collapsible-table td {
-    border: 1px solid var(--color-teritary);
+    border: 1px solid var(--color-secondary);
     padding: 6px;
     text-align: left;
 }
