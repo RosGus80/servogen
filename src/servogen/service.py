@@ -1,6 +1,7 @@
 import os
 import json
 import re
+from pprint import pprint
 from pathlib import Path
 from appdirs import user_data_dir
 from collections import Counter
@@ -78,6 +79,7 @@ def sort_units_fields(units: list) -> list:
 
 
 def find_faction_rule(roster: dict) -> tuple[str, str]:
+    """Finds a faction rule based on what rule is in every unit of a faction"""
     force = roster['forces'][0]
 
     faction_name = None
@@ -111,6 +113,7 @@ def find_faction_rule(roster: dict) -> tuple[str, str]:
 
 
 def find_keywords(weapon: dict, profile: dict) -> list[tuple[str, dict]]:
+    """Finds keywords for weapons"""
     weapon_rules = weapon.get('rules', [])
 
     if len(weapon_rules) < 1:
@@ -242,9 +245,24 @@ def find_units(json_roster: dict) -> list:
         unit['extra_tables'] = {}
 
         for profile in unit.get("profiles", []):
-            type_name = profile.get("typeName")
+            type_name = profile.get("typeName", None)
             if type_name and type_name not in ignored_types:
                 unit['extra_tables'].setdefault(type_name, []).append(profile)
+
+        # Finding exclusive model upgrades to be listed as well
+        for selection in unit.get("selections", []):
+            if selection.get('type', None) == 'model':
+                for model_selection in selection.get('selections', []):
+                    # Here we are in the space where both weapons and upgrades exist and they both 
+                    # sometimes have a type of 'upgrade' so we'll have to differantiate somehow
+                    for profile in model_selection.get('profiles', []):
+                        # Here we are in the profile ("Fusion blaster" or "Shield drone")
+                        for characteristic in profile.get('characteristics', []):
+                            if characteristic.get('name', None) == 'Description':
+                                type_name = profile.get('typeName', None)
+                                if type_name and type_name not in ignored_types:
+                                    unit['extra_tables'].setdefault(type_name, []).append(profile)
+
 
     sort_units_fields(output)
 
@@ -266,13 +284,9 @@ def find_rules(units: list[dict]) -> dict[str, tuple[str, str]]:
     
     return output
 
-# TODO: When there are abilities in options (see my latest tau roster stealth 
-# battlesuits commander), it properly lists them in model options, but not 
-# in abilities, so when i get the abilities dictionary, we should iterate 
-# through all the model options, check for abilitites and add it as well
-
 
 def find_profiles(unit: dict, is_recursion=False) -> list[dict]:
+    """Finds models profiles and merges the same models into one row (2x something...)"""
     output: list[dict] = []
 
     if unit['type'] == 'model' and not is_recursion:
@@ -372,3 +386,4 @@ def add_css(file_name: str, bg: str ='#ffffff', primary: str ='#649699', seconda
         file.write(content)
 
     print(f'{file_name} theme added')
+    
