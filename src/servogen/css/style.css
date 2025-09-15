@@ -162,14 +162,10 @@ tr:nth-child(odd) {
     background-color: var(--color-light);
 }
 
-footer {
-    border-top: 2px solid var(--color-primary);
-}
-
 .rule-div {
-    width: 100%;
+    width: 95%;
 
-    border-bottom: 2px solid var(--color-primary);
+    border-top: 2px solid var(--color-primary);
     
     display: flex;
     flex-direction: column;

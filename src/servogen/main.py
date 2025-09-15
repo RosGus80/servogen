@@ -57,6 +57,8 @@ def main():
 
         add_css(theme['name'], theme.get('background', '#ffffff'), theme.get('primary', '#649699'), theme.get('secondary', '#2a856a'), theme.get('dark', '#193341'), theme.get('light', '#efefef'), theme.get('contrast', '#c75040'), theme.get('text', '#000000'), theme.get('title', ''))
         return None
+    elif not args.render:
+        raise ValueError('You have to use -r flag and mark the path to your json file')
 
     input_path = args.render
     if args.output:
