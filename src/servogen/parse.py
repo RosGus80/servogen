@@ -34,6 +34,9 @@ def find_detachment(roster) -> dict:
 
 
 def render_html(input_json_path: str, output_path: str, collapse: bool = False, theme: str | None = None):
+    """
+    Endpoint of a programm, gets all the context vars and outputs an html file
+    """
     roster: dict = json_load(input_json_path)['roster']
 
     env = Environment(
