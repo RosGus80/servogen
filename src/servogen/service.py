@@ -114,6 +114,8 @@ def find_faction_rule(roster: dict) -> tuple[str, str]:
 
 def find_keywords(weapon: dict, profile: dict) -> list[tuple[str, dict]]:
     """Finds keywords for weapons"""
+    # TODO: Deathwatch terminator squad doesnt see their ranged options
+
     weapon_rules = weapon.get('rules', [])
 
     if len(weapon_rules) < 1:
@@ -252,6 +254,7 @@ def find_units(json_roster: dict) -> list:
         # Finding exclusive model upgrades to be listed as well
         for selection in unit.get("selections", []):
             if selection.get('type', None) == 'model':
+                # Go through individual models' upgrades and list them
                 for model_selection in selection.get('selections', []):
                     # Here we are in the space where both weapons and upgrades exist and they both 
                     # sometimes have a type of 'upgrade' so we'll have to differantiate somehow
@@ -262,6 +265,11 @@ def find_units(json_roster: dict) -> list:
                                 type_name = profile.get('typeName', None)
                                 if type_name and type_name not in ignored_types:
                                     unit['extra_tables'].setdefault(type_name, []).append(profile)
+            elif selection.get('type', None) == 'upgrade':
+                # Reiver case: grapel launchers are the unit-wide upgrade
+                for profile in selection.get('profiles', []):
+                    if profile.get('typeName', None) == 'Abilities':
+                        unit['extra_tables'].setdefault('Abilities', []).append(profile)
 
 
     sort_units_fields(output)
