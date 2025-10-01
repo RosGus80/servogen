@@ -114,7 +114,6 @@ def find_faction_rule(roster: dict) -> tuple[str, str]:
 
 def find_keywords(weapon: dict, profile: dict) -> list[tuple[str, dict]]:
     """Finds keywords for weapons"""
-    # TODO: Deathwatch terminator squad doesnt see their ranged options
 
     weapon_rules = weapon.get('rules', [])
 
@@ -145,6 +144,20 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
         model_selections = unit.get('selections', [])
         for selection in model_selections:
             weapon_selections = selection.get('selections', [])
+
+            weapons_to_delete = []
+
+            for weapon in weapon_selections:
+                for in_weapon_selection in weapon.get('selections', []):
+                    weapon_selections.append(in_weapon_selection)
+                    weapons_to_delete.append(weapon)
+
+            for weapon in weapons_to_delete:
+                try:
+                    weapon_selections.remove(weapon)
+                except ValueError:
+                    continue
+
             for weapon in weapon_selections:
                 if ('profiles' not in weapon.keys() 
                 or 'weapon' not in weapon['profiles'][0]['typeName'].lower()):
@@ -297,7 +310,7 @@ def find_profiles(unit: dict, is_recursion=False) -> list[dict]:
     """Finds models profiles and merges the same models into one row (2x something...)"""
     output: list[dict] = []
 
-    if unit['type'] == 'model' and not is_recursion:
+    if unit.get('type', None) == 'model' and not is_recursion:
         for profile in unit['profiles']:
             if profile['typeName'] == 'Unit':
                 output.append(profile)
