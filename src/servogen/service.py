@@ -141,17 +141,20 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
 
     if unit['type'] == 'unit':
         # Iterate through selections' (models') weapon loadout
-        model_selections = unit.get('selections', [])
+        model_selections = unit.get('selections', []) # Every type of models in unit
         for selection in model_selections:
-            weapon_selections = selection.get('selections', [])
+            weapon_selections = selection.get('selections', []) # Every selection that a model has (not filtering out non-weapons yet)
 
-            weapons_to_delete = []
+            # Destructing choices like "storm bolter w/ power fists" to ('storm bolter...', 'power fist...')
+            weapons_to_delete = [] 
 
             for weapon in weapon_selections:
+                # Getting weapons from inside of multiweapon selection
                 for in_weapon_selection in weapon.get('selections', []):
                     weapon_selections.append(in_weapon_selection)
                     weapons_to_delete.append(weapon)
 
+            # Deleting destructed wepons
             for weapon in weapons_to_delete:
                 try:
                     weapon_selections.remove(weapon)
@@ -159,6 +162,7 @@ def find_unit_weapons(unit: dict, ranged: bool) -> list[dict]:
                     continue
 
             for weapon in weapon_selections:
+                # Check if it's a weapon (filtering out upgrade selections like homin beacon for tau stealth suits)
                 if ('profiles' not in weapon.keys() 
                 or 'weapon' not in weapon['profiles'][0]['typeName'].lower()):
                     continue
